@@ -61,7 +61,7 @@
                                 <img width="56" height="56" src="{{ url('images/upload/' . $data->organization->image) }}" class="bg-cover object-cover" alt="">
                             </div>
                             <div class="simplified-organizer-info__details" data-testid="organizer-info-details">
-                                <span class="simplified-organizer-info__name-by">By <strong class="simplified-organizer-info__name-link">Danish Refugee Council (DRC)</strong></span>
+                                <span class="simplified-organizer-info__name-by">By <strong class="simplified-organizer-info__name-link">{{ $data->organization->first_name .' '. $data->organization->last_name }}</strong></span>
                                 <div class="organizer-stats organizer-stats--condensed-full-width">
                                     <div data-testid="followers-count"><span class="organizer-stats__highlight">{{ $data->people }}</span> <span class="organizer-stats__suffix">followers</span></div>
                                 </div>
