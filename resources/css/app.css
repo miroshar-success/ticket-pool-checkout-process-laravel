@@ -1,0 +1,87 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/Poppins-Regular.ttf') format('truetype');
+  font-weight: light;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/Poppins-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: bold;
+}
+.stripe-button-el span {
+  background: var(--primary_color) !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  box-shadow: none !important;
+}
+.stripe-button-el span {
+  background: var(--primary_color) !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  box-shadow: none !important;
+}
+.events button{
+  color: #8896AB !important;
+  background: #FFFFFF !important;
+}   
+.events button[aria-selected=true]{
+  background: #3B82F6 !important;
+  color: #FFFFFF !important;
+}
+
+.carousel-indicators button{
+  background: #FFFFFF !important;
+}   
+.carousel-indicators button[aria-current=true]{
+  background: #723AC6 !important;
+}
+.navbar-nav > .active > a {
+  color: #723AC6;
+}
+.blogs button{
+  color: #8896AB !important;
+  background: #FFFFFF !important;
+}   
+.blogs button[aria-selected=true]{
+  background: #F59E0B !important;
+  color: #FFFFFF !important;
+}
+.profile button{
+  color: #8896AB !important;
+  background: #FFFFFF !important;
+}   
+.profile button[aria-selected=true]{
+  background: #723AC6 !important;
+  color: #FFFFFF !important;
+}
+input[type="radio"]:checked {
+  background-color: #F1EBF9 !important;
+  color: #723AC6 !important;
+}
+

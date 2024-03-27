@@ -1,0 +1,38 @@
+CREATE TABLE `organizer_payment_keys` (
+  `id` int(11) NOT NULL,
+  `organizer_id` bigint(20) UNSIGNED NOT NULL,
+  `stripe` int(11) DEFAULT NULL,
+  `paypal` int(11) DEFAULT NULL,
+  `razor` int(11) DEFAULT NULL,
+  `flutterwave` int(11) DEFAULT NULL,
+  `stripeSecretKey` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `stripePublicKey` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `paypalClientId` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `paypalSecret` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `razorPublishKey` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `razorSecretKey` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ravePublicKey` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `raveSecretKey` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `organizer_payment_keys`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `organizer_id` (`organizer_id`);
+
+ALTER TABLE `organizer_payment_keys`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `organizer_payment_keys`
+  ADD CONSTRAINT `organizer_id` FOREIGN KEY (`organizer_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+-- This SQL query inserts data into the organizer_payment_keys table by selecting the id, created_at and updated_at columns from the users table. It selects only those rows from the users table where the organizer_id does not already exist in the organizer_payment_keys table.
+INSERT INTO organizer_payment_keys (organizer_id, created_at, updated_at)
+SELECT id, NOW(), NOW()
+FROM users
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM organizer_payment_keys
+    WHERE organizer_payment_keys.organizer_id = users.id
+);

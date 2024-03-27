@@ -1,0 +1,5 @@
+!!! ALERT: This will remove the Description field in the Banners Table. As the update has that field removed from the usage, query is required to remove that field from the database
+
+
+
+ALTER TABLE `banner` DROP `description`;

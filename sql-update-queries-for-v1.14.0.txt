@@ -1,0 +1,87 @@
+ALTER TABLE `payment_setting` ADD `wallet` INT NULL DEFAULT '0' AFTER `id`;
+ALTER TABLE `general_settng` ADD `enable_twillio` INT NULL DEFAULT '0' AFTER `twilio_phone_number`, ADD `vonege_api_key` VARCHAR(150) NULL AFTER `enable_twillio`, ADD `vonage_account_secret` VARCHAR(150) NULL AFTER `vonege_api_key`, ADD `vonage_sender_number` VARCHAR(150) NULL AFTER `vonage_account_secret`, ADD `enable_vonage` INT NULL DEFAULT '0' AFTER `vonage_sender_number`;
+
+CREATE TABLE `wallets` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `holder_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `holder_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`meta`)),
+  `balance` decimal(64,0) NOT NULL DEFAULT 0,
+  `decimal_places` smallint(5) UNSIGNED NOT NULL DEFAULT 2,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE `wallets`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `wallets_holder_type_holder_id_slug_unique` (`holder_type`,`holder_id`,`slug`),
+  ADD UNIQUE KEY `wallets_uuid_unique` (`uuid`),
+  ADD KEY `wallets_holder_type_holder_id_index` (`holder_type`,`holder_id`),
+  ADD KEY `wallets_slug_index` (`slug`);
+
+ALTER TABLE `wallets`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+CREATE TABLE `transactions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `payable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payable_id` bigint(20) UNSIGNED NOT NULL,
+  `wallet_id` bigint(20) UNSIGNED NOT NULL,
+  `type` enum('deposit','withdraw') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` decimal(64,0) NOT NULL,
+  `confirmed` tinyint(1) NOT NULL,
+  `meta` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`meta`)),
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `transactions_uuid_unique` (`uuid`),
+  ADD KEY `transactions_payable_type_payable_id_index` (`payable_type`,`payable_id`),
+  ADD KEY `payable_type_payable_id_ind` (`payable_type`,`payable_id`),
+  ADD KEY `payable_type_ind` (`payable_type`,`payable_id`,`type`),
+  ADD KEY `payable_confirmed_ind` (`payable_type`,`payable_id`,`confirmed`),
+  ADD KEY `payable_type_confirmed_ind` (`payable_type`,`payable_id`,`type`,`confirmed`),
+  ADD KEY `transactions_type_index` (`type`),
+  ADD KEY `transactions_wallet_id_foreign` (`wallet_id`);
+ALTER TABLE `transactions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_wallet_id_foreign` FOREIGN KEY (`wallet_id`) REFERENCES `wallets` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+CREATE TABLE `transfers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `from_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_id` bigint(20) UNSIGNED NOT NULL,
+  `to_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_id` bigint(20) UNSIGNED NOT NULL,
+  `status` enum('exchange','transfer','paid','refund','gift') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'transfer',
+  `status_last` enum('exchange','transfer','paid','refund','gift') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deposit_id` bigint(20) UNSIGNED NOT NULL,
+  `withdraw_id` bigint(20) UNSIGNED NOT NULL,
+  `discount` decimal(64,0) NOT NULL DEFAULT 0,
+  `fee` decimal(64,0) NOT NULL DEFAULT 0,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE `transfers`
+  ADD CONSTRAINT `transfers_deposit_id_foreign` FOREIGN KEY (`deposit_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `transfers_withdraw_id_foreign` FOREIGN KEY (`withdraw_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE;
+COMMIT;
+ALTER TABLE `transfers`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `transfers_uuid_unique` (`uuid`),
+  ADD KEY `transfers_from_type_from_id_index` (`from_type`,`from_id`),
+  ADD KEY `transfers_to_type_to_id_index` (`to_type`,`to_id`),
+  ADD KEY `transfers_deposit_id_foreign` (`deposit_id`),
+  ADD KEY `transfers_withdraw_id_foreign` (`withdraw_id`);
+ALTER TABLE `transfers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;

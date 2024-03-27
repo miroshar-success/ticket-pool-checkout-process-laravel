@@ -1,0 +1,242 @@
+.event-detail-page .content {
+    padding-top: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.event-detail-page .content.max-width-100 {
+    max-width: unset;
+}
+.event-detail-page .content * {
+    font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,sans-serif!important;
+}
+.event-detail-page .content .event-title {
+    font-size: 52px;
+    line-height: 64px;
+    color: #1e0a3c;
+    font-weight: 800;
+}
+.event-detail-page .content .event-image {
+    border-radius: 24px;
+}
+.event-detail-page .content .section-title {
+    font-size: 24px;
+    line-height: 28px;
+    color: #1e0a3c;
+}
+.event-detail-page .content .section-content p {
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #6f7287 !important;
+}
+.event-detail-page .content .tags {
+    margin-top: -16px;
+}
+.event-detail-page .content .tags .tag-item {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #f8f7fa;
+    border-radius: 48px;
+    color: #39364f;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    height: 36px;
+    padding: 0 16px;
+    -webkit-transition: all .4s cubic-bezier(.4,0,.3,1);
+    transition: all .4s cubic-bezier(.4,0,.3,1);
+    margin-right: 16px;
+    margin-top: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.event-detail-page .content .datetime {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 600;
+    color: #1e0a3c;
+}
+.event-detail-page .content .common-btn {
+    color: #fff;
+    border-radius: 4px;
+    height: 44px;    
+    line-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: var(--primary_color);
+} 
+.event-detail-page .content .common-btn.blue-btn {
+    /* background-color: #3659e3; */
+}
+.event-detail-page .content .common-btn.orange-btn {
+    /* background-color: #d1410c; */
+}
+.event-detail-page .content .text-orgniaztaion {
+    color: #1e0a3c;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    text-wrap: nowrap
+}
+.event-detail-page .content .text-organize-by {
+    color: #6f7287;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+.event-detail-page .content .text-orange {
+    color: #d1410c;
+    font-size: 14px;
+    font-weight: 600;
+}
+.event-detail-page .content .text-ticket-sale {
+    color: #39364f;
+    font-size: 14px;
+    font-weight: 600;
+}
+.event-detail-page .content .paid-tag {
+    background-color: #eeeafb;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 8px;
+    color: #1e0a3c;
+    -webkit-column-gap: 6px;
+    -moz-column-gap: 6px;
+    column-gap: 6px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    margin: 4px;
+    max-height: 32px;
+    padding: 7px 12px;
+}
+.event-detail-page .content .paid-tag.available-ticket {
+    display: flex !important;
+}
+.event-detail-page .content .ticket-card {
+    box-shadow: inset 0 0 0 2px #3659e3;
+    border-radius: 8px;
+    padding: 16px;
+    width: 100%;
+}
+.event-detail-page .content .ticket-card .section-content p {
+    max-height: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical; 
+}
+.event-detail-page .content .ticket-card .common-btn.orange-btn {
+    position: absolute;
+    bottom: 16px;
+    width: calc(100% - 32px);
+}
+.event-detail-page .content .ticket-name {
+    color: #393636;
+    font-size: 18px;
+    font-weight: 600;
+}
+.event-detail-page .content .ticket-price * {
+    color: #1e0a3c;
+    font-size: 52px;
+    font-weight: 800;
+    text-wrap: nowrap;
+}
+.checkout-page.event-detail-page .content .ticket-price * {
+    font-size: 30px;
+}
+.event-detail-page .content form label,
+.event-detail-page .content form input,
+.event-detail-page .content form select {
+    font-size: 14px;
+}
+.event-detail-page .content .location-section {
+    /* margin-top: 68px; */
+}
+.event-detail-page .content .organization-image {
+    border-radius: 50%;
+    margin-bottom: 32px;
+    overflow: hidden;
+}
+.event-detail-page .content .organization-image img {
+    width: 80px;
+    height: 80px;
+}
+.event-detail-page .simplified-organizer-info {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #f8f7fa;
+    border-radius: 8px;
+    padding: 16px 24px;
+    /* margin-bottom: 64px; */
+}
+.event-detail-page .simplified-organizer-info__avatar {
+    margin-right: 16px;
+    width: 56px;    
+    height: 56px;
+    border-radius: 28px;
+    border: 1px solid #eeedf2;
+    overflow: hidden;
+}
+.event-detail-page .simplified-organizer-info__name-by {
+    color: #4b4d63;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+.event-detail-page .simplified-organizer-info__name-link {
+    color: #1e0a3c;
+    font-weight: 600;
+}
+.event-detail-page .organizer-stats__suffix {
+    color: #39364f;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 8px;
+}
+.event-detail-page .content .mt-12 {
+    margin-top: 48px;
+}
+.event-detail-page .followers-count {
+    margin: 24px auto 12px;
+}
+.event-detail-page .followers-count .organizer-stats__highlight {
+    font-weight: 700;
+    color: #1e0a3c;
+    display: block;
+    font-size: 20px;
+    line-height: 28px;
+}
+.event-detail-page .followers-count .organizer-stats__suffix {
+    color: #6f7287;
+    display: block;
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+@media (max-width: 1245px) {
+    .event-detail-page .content { 
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+@media (max-width: 480px) {
+    .event-detail-page .content .event-title {
+        font-size: 26px;
+        line-height: 32px;
+    }
+}

@@ -1,0 +1,63 @@
+body, html {
+    direction: rtl; 
+}
+  
+  .ltr {
+    direction: ltr; }
+  
+  .rtl {
+    direction: rtl; 
+}
+.flag-img {
+    width: 29px;
+    height: 18px;
+    margin-left: 9px !important;
+    margin-right: 0px !important;
+}
+
+.text-right
+{
+    text-align: left !important;
+}
+
+.navbar-default .nav-link i {
+    padding-right: 0px;
+    padding-left: 5px;
+}
+
+.navbar-default .justify-content-center
+{
+    margin-left: 11px;
+    justify-content: flex-end !important;
+}
+.list-inline{
+    float: right !important;
+    padding-right: 0 !important;
+}
+.intro-single .title-single-box{
+    border-right: 3px solid var(--primary_color);
+    border-left: none;
+    text-align: right;
+    padding: 0.5rem 2rem 0.5rem 0;
+}
+.all-event .grid-option p{
+    float: right;
+}
+.all-event .dropdown{
+    float: left;
+}
+.icon-box .icon-box-icon{
+    text-align: right;
+}
+.icon-box-title{
+    margin-right: 30px;
+}
+.icon-title{
+    text-align: right;
+}
+.list-inline-item{
+    margin-right: 2rem;
+}
+.fogDtz, ._2x_Fz5Ot{
+    text-align: right;
+}

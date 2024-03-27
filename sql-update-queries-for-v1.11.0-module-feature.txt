@@ -1,0 +1,22 @@
+INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(66, 'module_add', 'web', '2023-09-13 11:07:45','2023-09-13 11:07:45'),
+(67, 'module_remove', 'web', '2023-09-13 11:07:45', '2023-09-13 11:07:45'),
+(68, 'module_enable', 'web', '2023-09-13 11:07:45', '2023-09-13 11:07:45'),
+(69, 'module_disable', 'web', '2023-09-13 11:07:45', '2023-09-13 11:07:45'),
+(70, 'module_access', 'web', '2023-09-13 11:07:45', '2023-09-13 11:07:45');
+
+--
+-- Table structure for table `module`
+--
+
+CREATE TABLE `module` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `module` varchar(255) NOT NULL,
+  `is_enable` TINYINT(2) NOT NULL DEFAULT '0',
+  `is_install` TINYINT(2) NOT NULL DEFAULT '0',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `module` (`id`, `module`, `updated_at`, `created_at`)
+VALUES ('1', 'Seatmap', current_timestamp(), current_timestamp());
