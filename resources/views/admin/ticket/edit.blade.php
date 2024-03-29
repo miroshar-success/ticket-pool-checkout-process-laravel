@@ -172,6 +172,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label>{{ __('Ticket Key') }}</label>
+                                        <input type="number" name="ticket_key" min="1" required
+                                            placeholder="{{ __('Ticket Key') }}" id="ticket_key"
+                                            value="{{ $ticket->ticket_key }}"
+                                            class="form-control @error('ticket_key')? is-invalid @enderror">
+                                        @error('ticket_key')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <button type="submit"

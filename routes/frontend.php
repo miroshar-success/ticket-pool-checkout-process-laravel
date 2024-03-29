@@ -68,6 +68,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
             Route::get('email/verify/{id}/{token}', [FrontendController::class, 'emailVerify']);
             Route::get('/checkout/{id}', [FrontendController::class, 'checkout']);
+            Route::post('/checkout', [FrontendController::class, 'checkoutseatsio'])->name('checkout');
             Route::post('/applyCoupon', [FrontendController::class, 'applyCoupon']);
             Route::any('/createOrder', [FrontendController::class, 'createOrder'])->name('createOrderUser');
             Route::get('/user/profile', [FrontendController::class, 'userTickets']);

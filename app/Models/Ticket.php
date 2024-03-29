@@ -24,7 +24,8 @@ class Ticket extends Model
         'is_deleted',
         'allday',
         'maximum_checkins',
-        'seatmap_id'
+        'seatmap_id',
+        'ticket_key'
     ];
 
     protected $table = 'tickets';
