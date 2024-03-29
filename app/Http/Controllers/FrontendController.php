@@ -891,22 +891,27 @@ class FrontendController extends Controller
                         }])->where('seatsio_eventId',$request->seatsio_eventId)->first();
         
         $data = array();
+        $data['event'] = $eventDetails;
+        $totalTickets = 0;
         if(!empty($eventDetails['ticket'])){
-            dd($eventDetails['ticket']->toArray());
             $setting = Setting::first();
-            foreach($eventDetails['ticket'] as $ticket){
-                $data[$ticket['id']] = $ticket;
-                $data[$ticket['id']]['event'] = Event::find($ticket['event_id']);
-
+            foreach($eventDetails['ticket'] as $key => $ticket){
+                try { 
+                $totalTickets += $selectedSeats[$ticket['ticket_key']];
+                         
+                $data['ticket'][$key] = $ticket;
+                $data['ticket'][$key]['selectedseats'] = $selectedSeats[$ticket['ticket_key']];
+                $data['ticket'][$key]['selectedseatsPrice'] = $selectedSeats[$ticket['ticket_key']] * $ticket['price']; 
+                
                 SEOMeta::setTitle($ticket['name'])
                 ->setDescription($ticket['description'])
                 ->addKeyword([
                     $setting->app_name,
                     $ticket['name'],
-                    $ticket['event']['name'],
-                    $ticket['event']['tags']
+                    $data['event']['name'],
+                    $data['event']['tags']
                 ]);
-
+                
                 OpenGraph::setTitle($ticket['name'])
                     ->setDescription($ticket['description'])
                     ->setUrl(url()->current());
@@ -921,16 +926,16 @@ class FrontendController extends Controller
                 SEOTools::opengraph()->addProperty('keywords', [
                     $setting->app_name,
                     $ticket['name'],
-                    $ticket['event']['name'],
-                    $ticket['event']['tags']
+                    $data['event']['name'],
+                    $data['event']['tags']
                 ]);
                 SEOTools::jsonLd()->addImage($setting->imagePath . $setting->logo);
-
+                
                 $arr = [];
                 $used = Order::where('ticket_id', $ticket['id'])->sum('quantity');
-                $data[$ticket['id']]['available_qty'] = $data['quantity'] - $used;
-                $data[$ticket['id']]['tax'] = Tax::where([['allow_all_bill', 1], ['status', 1]])->orderBy('id', 'DESC')->get()->makeHidden(['created_at', 'updated_at']);
-                foreach ($data[$ticket['id']]['tax'] as $key => $item) {
+                $data['ticket'][$key]['available_qty'] = $ticket['quantity'] - $used;
+                $data['ticket'][$key]['tax'] = Tax::where([['allow_all_bill', 1], ['status', 1]])->orderBy('id', 'DESC')->get()->makeHidden(['created_at', 'updated_at']);
+                foreach ($data['ticket'][$key]['tax'] as $key => $item) {
                     if ($item->amount_type == 'percentage') {
 
                         $amount = ($item->price * $ticket['price']) / 100;
@@ -941,27 +946,27 @@ class FrontendController extends Controller
                         array_push($arr, $amount);
                     }
                 }
-                $data[$ticket['id']]['tax_total'] = array_sum($arr);
-                $data[$ticket['id']]['tax_total'] = round($data[$ticket['id']]['tax_total'], 2);
-                $data[$ticket['id']]['currency_code'] = $setting->currency;
-                $data[$ticket['id']]['currency'] = $setting->currency_sybmol;
-                $data[$ticket['id']]['module'] = Module::where('module', 'Seatmap')->first();
-                if ($ticket['seatmap_id'] != null && $data[$ticket['id']]['module']->is_install == 1 && $data[$ticket['id']]['module']->is_enable == 1) {
-                    $seat_map = SeatMaps::findOrFail($ticket['seatmap_id']);
-                    $rows = Rows::where('seat_map_id', $ticket['seatmap_id'])->get();
-                    foreach ($rows as $row) {
-                        $seats = Seats::where('row_id', $row->id)->get();
-                        $seatsByRow[$row->id] = $seats;
-                    }
-                    $data[$ticket['id']]['seat_map'] = $seat_map;
-                    $data[$ticket['id']]['rows'] = $rows;
-                    $data[$ticket['id']]['seatsByRow'] = $seatsByRow;
+                $data['ticket'][$key]['singletax_total'] = array_sum($arr);
+                $data['ticket'][$key]['singletax_total'] = round($data[$ticket['id']]['singletax_total'], 2);
+                
+                
+                } catch (\Throwable $th) {
+                    \Log::error($th);
                 }
-                $data[$ticket['id']]['totalPersTax'] = Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'percentage']])->sum('price');
-                $data[$ticket['id']]['totalAmountTax'] = Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'price']])->sum('price');
             }
+            $priceArray = array_column($data['ticket'], 'selectedseatsPrice');
+            $data['price_total'] = array_sum($priceArray);
+            $tax_totalArray = array_column($data['ticket'], 'singletax_total');
+            $data['tax_total'] = array_sum($tax_totalArray) * $totalTickets;
+            $data['currency_code'] = $setting->currency;
+            $data['currency'] = $setting->currency_sybmol;
+            $data['module'] = Module::where('module', 'Seatmap')->first();
+            $data['totalPersTax'] = (Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'percentage']])->sum('price'))  * $totalTickets;
+            $data['totalAmountTax'] = (Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'price']])->sum('price')) * $totalTickets;
+            $data = (object) $data;
         }
-        return view('frontend.checkout', compact('data'));
+
+        return view('frontend.checkoutseatio', compact('data'));
     }
     public function applyCoupon(Request $request)
     {
