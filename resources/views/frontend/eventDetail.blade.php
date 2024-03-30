@@ -74,19 +74,23 @@
                             <div class="pt-4 flex space-x-3 md:flex-nowrap sm:flex-wrap xxsm:flex-wrap">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#3A3247" viewBox="0 0 24 24"><path d="M17 11h2V6h-2V4h-2v2H9V4H7v2H5v13h6v-2H7v-7h10zm0 1c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4m-.6 5.9 2.9-2.9-.9-.9-2.1 2.1-.7-.8-.8.8z" clip-rule="evenodd"></path></svg>
                                 <div class="flex space-x-2 pl-3">
+{{--                                    <p class="datetime">--}}
+{{--                                        {{ Carbon\Carbon::parse($data->start_time)->format('d') }}--}}
+{{--                                    </p>--}}
                                     <p class="datetime">
-                                        {{ Carbon\Carbon::parse($data->start_time)->format('d') }}
+                                        {{ \Carbon\Carbon::parse($data->start_time)->format('jS') }}
                                     </p>
+
                                     <p class="datetime">
-                                        {{ Carbon\Carbon::parse($data->start_time)->format('M y') }}</p>
+                                        {{ Carbon\Carbon::parse($data->start_time)->format('M Y') }}</p>
                                 </div>
                                 <p class="datetime">-</p>
                                 <div class="flex space-x-2">
                                     <p class="datetime">
-                                        {{ Carbon\Carbon::parse($data->end_time)->format('d') }}
+                                        {{ Carbon\Carbon::parse($data->event->start_time)->format('g:i A') }}
                                     </p>
-                                    <p class="datetime">
-                                        {{ Carbon\Carbon::parse($data->end_time)->format('M y') }}</p>
+{{--                                    <p class="datetime">--}}
+{{--                                        {{ Carbon\Carbon::parse($data->end_time)->format('') }}</p>--}}
                                 </div>
                             </div>
                         </div>
@@ -267,7 +271,7 @@
                                 <div class="ticket-card relative rounded-lg border border-gray-light p-5 ">
                                     <div class="!h-auto mb-5" style="height: auto;margin-bottom:100px;">
                                         <div class="flex justify-center">
-                                            <p class="paid-tag leading-4">{{ __('Paid') }}</p>
+                                            <p class="paid-tag leading-4">{{ __('Price') }}</p>
                                         </div>
                                         <p class="ticket-name leading-7 text-center py-4">
                                             {{ $item->name }}</p>
@@ -277,23 +281,23 @@
                                             <p class="font-medium text-5xl leading-10 text-black text-center">
                                                 {{ $item->price }}</p>
                                         </div>
-                                        {{-- when tickets are available --}}
                                         <div class="py-4 flex justify-center">
                                             @if ($item->available_qty < 0)
                                                 <p class="paid-tag available-ticket text-center py-2 just-center w-fit">
-                                                    {{ __('No Available tickets') }}</p>
+                                                    {{ __('Sold Out') }}</p>
                                             @else
                                                 <p class="paid-tag available-ticket text-center py-2 just-center w-fit">
-                                                    {{ $item->available_qty }}&nbsp{{ __('Available tickets') }}</p>
+                                                    {{ __('Available') }}</p>
+{{--                                                    {{ $item->available_qty }}&nbsp{{ __('Available tickets') }}</p>--}}
                                             @endif
                                         </div>
                                         <div class="section-content">
                                             <p class="font-normal text-base leading-6 text-gray text-left">
-                                                {{ $item->description }}
+{{--                                                {{ $item->description }}--}}
                                             </p>
                                         </div>
                                         <p class="mt-3 font-normal text-base leading-6 text-ticket-sale text-left">
-                                            {{ __('Ticket Sale starts onwards') }}
+                                            {{ __('Ticket Sale starts') }}
                                         </p>
                                         <p class="font-normal text-base leading-6 text-orange text-left">
                                             {{ Carbon\Carbon::parse($item->start_time)->format('d M Y') }} {{__('till')}}
@@ -313,7 +317,7 @@
                                     @else
                                         <a type="button"
                                             href="{{ url('/checkout/' . $item->id) }}"
-                                            class="common-btn orange-btn text-primary text-center font-medium text-base leading-7 w-full mt-7 flex justify-center">{{ __('View Details') }}
+                                            class="common-btn orange-btn text-primary text-center font-medium text-base leading-7 w-full mt-7 flex justify-center">{{ __('Buy Ticket') }}
                                         </a>
                                     @endif
                                 </div>
@@ -367,7 +371,7 @@
                                     @else
                                         <a type="button"
                                                 href="{{ url('/checkout/' . $item->id) }}"
-                                                class="common-btn orange-btn text-base leading-7 w-full mt-7 flex justify-center">{{ __('View Details') }}
+                                                class="common-btn orange-btn text-base leading-7 w-full mt-7 flex justify-center">{{ __('Buy Ticket') }}
                                             </a>
                                     @endif
                                 </div>

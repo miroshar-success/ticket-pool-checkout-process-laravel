@@ -5,23 +5,26 @@
 
     <div class="bg-scroll h-full">
         <div class="w-full h-full m-auto hidden">
+{{--            <img src="{{ url('images/downarrow.png') }}" alt="" class="w-3 h-3 z-20">--}}
 
 
-                <section class="iconCategoryBrowse" data-testid="icon-category-browse">
-            <div class="iconCategoryWrapper">
+{{--            <section class="iconCategoryBrowse" data-testid="icon-category-browse">--}}
+{{--            <div class="iconCategoryWrapper">--}}
 
-                @foreach ($category as $item)
-                <a href="/b/local/music" data-testid="category-card" data-heap-id="homepage-category-tiles">
-                    <div class="iconCategoryCard">
-                        <div class="iconCategoryCardImageWrapper">
-                            <img src="{{ asset('/images/upload/' . $item->image) }}" class="object-cover h-[600px] w-full mx-auto xxsm:max-msm:h-full" alt="Image 1">
-                        </div>
-                        <p class="iconCategoryCardTitle eds-text-weight--heavy">{{ $item->name }}</p>
-                    </div>
-                </a>
-                @endforeach
-                
-            </div>
+{{--                @foreach ($category as $item)--}}
+{{--                <a href="/b/local/music" data-testid="category-card" data-heap-id="homepage-category-tiles">--}}
+{{--                    <div class="iconCategoryCard">--}}
+{{--                        <div class="iconCategoryCardImageWrapper">--}}
+{{--                            <img src="{{ asset('/images/upload/' . $item->image) }}" class="object-cover h-[600px] w-full mx-auto xxsm:max-msm:h-full" alt="Image 1">--}}
+{{--                        </div>--}}
+{{--                        <p class="iconCategoryCardTitle eds-text-weight--heavy">{{ $item->name }}</p>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
+{{--                @endforeach--}}
+{{--                --}}
+{{--            </div>--}}
+
+{{--            </section>--}}
         </div>
 
             @if (count($category) == 0)
@@ -29,22 +32,25 @@
                     {{ __('There are no category added yet') }}
                 </div>
             @endif
-            <div class="iconCategoryBrowse">
-                <div class="iconCategoryWrapper z-10 relative">
-                    @foreach ($category as $item)
-                        <a href="{{ url('events-category/' . $item->id) . '/' . Str::slug($item->name) }}">
-                            <div class="iconCategoryCard">
-                                <div class="iconCategoryCardImageWrapper">
-                                    <img src="{{ url('images/upload/' . $item->image) }}" alt="" class="w-full bg-cover object-cover">
-                                </div>
-                                <p class="iconCategoryCardTitle eds-text-weight--heavy">{{ $item->name }}</p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
 
-            <div id="default-carousel" class="relative" data-carousel="slide">
+{{--            <div class="iconCategoryBrowse">--}}
+{{--                <div class="iconCategoryWrapper z-10 relative">--}}
+{{--                    @foreach ($category as $item)--}}
+{{--                        <a href="{{ url('events-category/' . $item->id) . '/' . Str::slug($item->name) }}">--}}
+{{--                            <div class="iconCategoryCard">--}}
+{{--                                <div class="iconCategoryCardImageWrapper">--}}
+{{--                                    <img src="{{ url('images/upload/' . $item->image) }}" alt="" class="w-full bg-cover object-cover">--}}
+{{--                                </div>--}}
+{{--                                <p class="iconCategoryCardTitle eds-text-weight--heavy">{{ $item->name }}</p>--}}
+{{--                            </div>--}}
+{{--                        </a>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--            </div>--}}
+        <img src="{{ url('images/topbanner.png') }}" alt="">
+
+
+        <div id="default-carousel" class="relative" data-carousel="slide">
                 <!-- Carousel wrapper -->
                 <div class="your-carousel relative w-full mx-auto overflow-hidden h-1/2">
                     @forelse ($banner as $item)
@@ -82,7 +88,7 @@
                                 class=" xmd:w-1/2 md:w-full sm:w-full msm:w-full xsm:w-full xxsm:w-full xmd:mx-0 xmd:py-3 xxmd:py-0 xxmd:mx-5 sm:py-3 msm:py-3 xsm:py-3 xxsm:py-3 md:mx-0 md:py-3 sm:mx-0 msm:mx-0 xsm:mx-0 xxsm:mx-0">
                                 <div class="flex">
                                     <label for="category"
-                                        class="font-poppins font-medium text-lg leading-4 text-black">{{ __('Category') }}</label>
+                                        class="font-poppins font-medium  leading-4 text-black">{{ __('Category') }}</label>
                                 </div>
                                 <div class="pt-3">
                                     <form method="post" action="{{ url('all-events') }}">
@@ -104,7 +110,7 @@
                             <div class="xmd:w-1/2 md:w-full sm:w-full msm:w-full xsm:w-full xxsm:w-full">
                                 <div class="flex">
                                     <label for="event"
-                                        class="font-poppins font-medium text-lg leading-4 text-black">{{ __('Event Type') }}</label>
+                                        class="font-poppins font-medium  leading-4 text-black">{{ __('Event Type') }}</label>
                                 </div>
                                 <div class="pt-3 ">
                                     <select id="event" name="type" class="select2 z-20 w-full">
@@ -124,7 +130,7 @@
                                 class="xmd:w-1/2 md:w-full sm:w-full msm:w-full xsm:w-full xxsm:w-full xmd:mx-0 xmd:py-0 xxmd:py-0 xxmd:mx-5 sm:py-3 msm:py-3 xsm:py-3 xxsm:py-3 md:mx-0 md:py-3 sm:mx-0 msm:mx-0 xsm:mx-0 xxsm:mx-0">
                                 <div class="flex">
                                     <label for="duration"
-                                        class="font-poppins font-medium text-lg leading-4 text-black">{{ __('Duration') }}</label>
+                                        class="font-poppins font-medium  leading-4 text-black">{{ __('Duration') }}</label>
                                 </div>
                                 <div class="pt-3">
                                     <select id="duration" name="duration"
@@ -152,7 +158,7 @@
                                 class="xmd:w-1/2 md:w-full sm:w-full msm:w-full xsm:w-full xxsm:w-full xmd:mx-0 xmd:py-0 xxmd:py-0 xxmd:mx-5 sm:py-3 msm:py-3 xsm:py-3 xxsm:py-3 md:mx-0 md:py-3 sm:mx-0 msm:mx-0 xsm:mx-0 xxsm:mx-0 date-section hidden">
                                 <div class="flex">
                                     <label for="date"
-                                        class="font-poppins font-medium text-lg leading-4 text-black">{{ __('Choose date') }}</label>
+                                        class="font-poppins font-medium  leading-4 text-black">{{ __('Choose date') }}</label>
                                 </div>
                                 <div class="pt-3">
                                     <input class=" border rounded form-control form-control-a date"
@@ -161,7 +167,7 @@
                             </div>
                             <div class="pt-2">
                                 <button type="submit"
-                                    class="px-10 py-3 text-white bg-primary text-center font-poppins font-normal text-base leading-6 rounded-md">
+                                    class="px-10 py-2 text-white text-sm bg-primary text-center font-poppins font-normal text-base leading-6 rounded-md">
                                     {{ __('Search') }}
                                 </button>
                             </div>
@@ -191,7 +197,7 @@
                 {{-- Latest Events --}}            
                 <div class="flex sm:flex-wrap msm:flex-wrap xsm:flex-wrap xxsm:flex-wrap justify-between pt-10 z-10">
                     <div class="flex items-center">
-                        <p class="home-section-title"> {{ __('Latest Event') }}</p>
+                        <p class="home-section-title"> {{ __('Latest Events') }}</p>
                     </div>
                     <div>
                     <!-- class=" xxsm:max-sm:hidden"> -->
@@ -243,7 +249,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if ($loop->iteration == 4)
+                        @if ($loop->iteration == 30)
                         @break
                     @endif
                 @endforeach

@@ -10,8 +10,8 @@
     font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,Helvetica,Tahoma,Arial,sans-serif!important;
 }
 .event-detail-page .content .event-title {
-    font-size: 52px;
-    line-height: 64px;
+    font-size: 36px;
+    line-height: 40px;
     color: #1e0a3c;
     font-weight: 800;
 }
@@ -228,6 +228,9 @@
     margin-top: 0;
 }
 
+.font-26{
+    font-size: 26px !important;
+}
 @media (max-width: 1245px) {
     .event-detail-page .content { 
         padding-left: 16px;
@@ -236,7 +239,10 @@
 }
 @media (max-width: 480px) {
     .event-detail-page .content .event-title {
-        font-size: 26px;
+        font-size: 22px;
         line-height: 32px;
+    }
+    .font-18{
+        font-size: 18px !important;
     }
 }

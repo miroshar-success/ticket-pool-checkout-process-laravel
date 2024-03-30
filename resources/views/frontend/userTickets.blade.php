@@ -7,7 +7,7 @@
     <div class="pb-20 bg-scroll min-h-screen" style="background-image: url('images/events.png')">
         <div
             class="mt-5 3xl:mx-52 2xl:mx-28 1xl:mx-28 xl:mx-36 xlg:mx-32 lg:mx-36 xxmd:mx-24 xmd:mx-32 md:mx-28 sm:mx-20 msm:mx-16 xsm:mx-10 xxsm:mx-5 z-10 relative">
-            <img src="{{ asset('images/home2.png') }}" alt="" class="object-cover w-full">
+            <img src="{{ asset('images/topbanner.png') }}" alt="" class="object-cover w-full">
         </div>
         {{-- scroll --}}
         <div class="mr-4 flex justify-end z-20">
@@ -53,21 +53,21 @@
                             id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                             <li class=" ">
                                 <button
-                                    class="inline-block  px-4 py-3 rounded-md z-20 font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
+                                    class="inline-block  px-2 mb-1 py-1 rounded-md z-20 font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
                                     id="upcoming_events" data-tabs-target="#events" type="button" role="tab"
                                     aria-controls="events"
                                     aria-selected="true">{{ __('Upcoming Event') }}({{ count($ticket['upcoming']) }})</button>
                             </li>
                             <li class="">
                                 <button
-                                    class="inline-block z-20 px-4 py-3 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
+                                    class="inline-block z-20 px-2 mb-1 py-1 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
                                     id="past_events" data-tabs-target="#past" type="button" role="tab"
                                     aria-controls="past"
                                     aria-selected="false">{{ __('Past Events') }}({{ count($ticket['past']) }})</button>
                             </li>
                             <li class="">
                                 <button
-                                    class="inline-block z-20 px-4 py-3 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
+                                    class="inline-block z-20 px-2 mb-1 py-1 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
                                     id="saved_blog" data-tabs-target="#blog" type="button" role="tab"
                                     aria-controls="blog" aria-selected="false">{{ __('Liked Blogs') }}
                                     (
@@ -77,7 +77,7 @@
                             </li>
                             <li class="">
                                 <button
-                                    class="inline-block z-20 px-4 py-3 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
+                                    class="inline-block z-20 px-2 mb-1 py-1 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
                                     id="follow" data-tabs-target="#following" type="button" role="tab"
                                     aria-controls="following" aria-selected="false">{{ __('Following') }}
                                     (
@@ -87,7 +87,7 @@
                             </li>
                             <li class="">
                                 <button
-                                    class="inline-block z-20 px-4 py-3 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
+                                    class="inline-block z-20 px-2 mb-1 py-1 rounded-md font-poppins font-normal text-base leaading-6 border border-gray-light focus:outline-none relative"
                                     id="follow" data-tabs-target="#favorite" type="button" role="tab"
                                     aria-controls="favorite" aria-selected="false">{{ __('Liked Events') }}
                                     (
