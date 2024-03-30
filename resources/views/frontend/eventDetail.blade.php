@@ -225,6 +225,7 @@
                         <script>
                             var selectedSeats = {};
                             var pricing = {!! $json_pricing !!};
+                            var seatsIoIds = [];
                             new seatsio.SeatingChart({
                                 divId: 'chart',
                                 workspaceKey: '74c425c5-1af8-4ffc-9ad0-3aa488fe13a6',
@@ -238,12 +239,16 @@
                                 showZoomOutButtonOnMobile: false,
                                 onObjectSelected: function (object) {
                                     // add the selected seat id to the array
+                                    seatsIoIds.push(object.label);
                                     var ticketKey = object.category.key;
                                     selectedSeats[ticketKey] = (selectedSeats[ticketKey] || 0) + 1; // Increment count or initialize to 1
                                     showPaymentbutton();
                                 },
                                 onObjectDeselected: function (object) {
                                     // remove the deselected seat id from the array
+                                    var index = seatsIoIds.indexOf(object.label);
+                                    if (index !== -1) seatsIoIds.splice(index, 1);
+                                    
                                     var ticketKey = object.category.key;
                                     if (selectedSeats[ticketKey]) {
                                         selectedSeats[ticketKey]--;
@@ -261,6 +266,7 @@
                                     $("#pay-seatio").hide();
                                 }
                                 $("#selectedSeatsInput").val(JSON.stringify(selectedSeats));
+                                $("#seatsIoIds").val(JSON.stringify(seatsIoIds));
                                 // console.log('Selected Seats:', selectedSeats);
                             }
                         </script>
@@ -392,6 +398,7 @@
                     @csrf                    
                     <input type="hidden" id="seatsio_eventId" name="seatsio_eventId" value="{{$data->seatsio_eventId}}">
                     <input type="hidden" id="selectedSeatsInput" name="selectedSeats">
+                    <input type="hidden" id="seatsIoIds" name="seatsIoIds">
                     <button type="submit" id="pay-seatio" class="font-medium text-lg leading-6 text-white bg-primary w-full rounded-md py-3 mt-10" style="width:50%; display:none;">Proceed</button>
                 </form>
             </div>

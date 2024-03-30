@@ -30,6 +30,7 @@ class Order extends Model
         'checkins_count',
         'seat_details',
         'book_seats',
+        'ticket_id_mutiple',
     ];
 
     protected $table = 'orders';
