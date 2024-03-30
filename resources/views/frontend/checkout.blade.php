@@ -56,7 +56,8 @@
             <input type="hidden" class="tax_data" id="tax_data" name="tax_data" value="{{ $data->tax }}">
             <input type="hidden" name="event_id" value="{{ $data->event_id }}">
             <input type="hidden" name="ticketname" id="ticketname" value="{{ $data->name }}">
-            <input type="hidden" name="seatsIoIds" id="seatsIoIds" value="{{ $data->seatsIoIds }}">
+            <input type="hidden" name="seatsIoIds" id="seatsIoIds" value="">
+            <input type="hidden" name="selectedSeatsIo" id="selectedSeatsIo" value="">
             <div
                 class="mt-10 3xl:mx-52 2xl:mx-28 1xl:mx-28 xl:mx-36 xlg:mx-32 lg:mx-36 xxmd:mx-24 xmd:mx-32 md:mx-28 sm:mx-20 msm:mx-16 xsm:mx-10 xxsm:mx-5 z-10 relative">
                 <div

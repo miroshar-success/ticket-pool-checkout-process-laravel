@@ -21,7 +21,7 @@
         <input type="hidden" name="name" value="{{ auth()->guard('appuser')->user()->name }}">
         <input type="hidden" name="flutterwave_key" value="{{ \App\Models\PaymentSetting::find(1)->ravePublicKey }}">
         <input type="hidden" name="seatsIoIds" id="seatsIoIds" value="{{ $data->seatsIoIds }}">
-        
+        <input type="hidden" name="selectedSeatsIo" id="selectedSeatsIo" value="{{ $data->selectedSeatsIo }}">
         <div id="ticketorder" class="content max-width-100">
             @csrf
             <input type="hidden" id="razor_key" name="razor_key"
@@ -60,6 +60,7 @@
             <input type="hidden" name="ticket_id" id="ticket_id" value="{{ $ticketIds }}">
             <input type="hidden" name="selectedSeats" id="selectedSeats">
             <input type="hidden" name="selectedSeatsId[]" id="selectedSeatsId">
+            
             <input type="hidden" name="coupon_id" id="coupon_id" value="">
             <input type="hidden" name="coupon_discount" id="coupon_discount" value="0">
             <input type="hidden" name="subtotal" id="subtotal" value="">

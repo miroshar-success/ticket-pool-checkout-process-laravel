@@ -958,6 +958,7 @@ class FrontendController extends Controller
                     \Log::error($th);
                 }
             }
+            $data['selectedSeatsIo'] = $request->selectedSeats;
             $data['seatsIoIds'] = $request->seatsIoIds;
             $data['totalTickets'] = $totalTickets;
             $priceArray = array_column($data['ticket'], 'selectedseatsPrice');
@@ -2045,9 +2046,10 @@ class FrontendController extends Controller
         $request = Session::get('request');
         $ticket = Ticket::findOrFail($request['ticket_id']);
         $ticketIds = null;
-        if(strpos($request['ticket_id'],',') !== false){
+        if(strpos($request['ticket_id'],',') !== false && !empty($request['selectedSeatsIo'])){
             $ticketIds = $request['ticket_id'];
             $request['ticket_id'] = explode(',',$request['ticket_id'])[0];
+            $ticket = Ticket::findOrFail($request['ticket_id']);
         }
 
         $event = Event::find($ticket->event_id);
@@ -2102,15 +2104,32 @@ class FrontendController extends Controller
                     $seat->update(['type' => 'occupied']);
                 }
             }
+        } 
+        if(!empty($request['selectedSeatsIo'])){
+            
+            $ticketIdArray = explode(',',$ticketIds);
+            $allTickets = Ticket::whereIn('id',$ticketIdArray)->get();
+            $selectedSeatsIo = json_decode($request['selectedSeatsIo'],true);
+            foreach($allTickets as $ticket){ 
+                $totalTickets = $selectedSeatsIo[$ticket['ticket_key']];
+                for ($i = 1; $i <= $totalTickets; $i++) {
+                    $child['ticket_number'] = uniqid();
+                    $child['ticket_id'] = $ticket['id'];
+                    $child['order_id'] = $order->id;
+                    $child['customer_id'] = Auth::guard('appuser')->user()->id;
+                    OrderChild::create($child);
+                }
+            }
+        }else{
+            for ($i = 1; $i <= $request['quantity']; $i++) {
+                $child['ticket_number'] = uniqid();
+                $child['ticket_id'] = $request['ticket_id'];
+                $child['order_id'] = $order->id;
+                $child['customer_id'] = Auth::guard('appuser')->user()->id;
+                OrderChild::create($child);
+            }
         }
-
-        for ($i = 1; $i <= $request['quantity']; $i++) {
-            $child['ticket_number'] = uniqid();
-            $child['ticket_id'] = $request['ticket_id'];
-            $child['order_id'] = $order->id;
-            $child['customer_id'] = Auth::guard('appuser')->user()->id;
-            OrderChild::create($child);
-        }
+        
         if (isset($request['tax_data'])) {
             foreach (json_decode($data['tax_data']) as $value) {
                 $tax['order_id'] = $order->id;

@@ -1812,6 +1812,9 @@ function stripeSession() {
 
             seatsIoIds: $("#seatsIoIds").val(),
 
+            selectedSeatsIo: $("#selectedSeatsIo").val(),
+            
+
             
 
         },
