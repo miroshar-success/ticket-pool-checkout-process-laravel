@@ -87,7 +87,7 @@
                                 <p class="datetime">-</p>
                                 <div class="flex space-x-2">
                                     <p class="datetime">
-                                        {{ Carbon\Carbon::parse($data->event->start_time)->format('g:i A') }}
+                                        {{ Carbon\Carbon::parse($data->start_time)->format('g:i A') }}
                                     </p>
 {{--                                    <p class="datetime">--}}
 {{--                                        {{ Carbon\Carbon::parse($data->end_time)->format('') }}</p>--}}
