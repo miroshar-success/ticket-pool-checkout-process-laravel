@@ -21,20 +21,20 @@
                     id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
                     <li class="mr-2 ">
                         <button
-                            class="inline-block p-4 px-6 py-3 rounded-md z-20 font-poppins shadow-md focus:outline-none relative"
+                            class="inline-block px-2 py-1 rounded-md z-20 font-poppins shadow-md focus:outline-none relative"
                             id="all_events" data-tabs-target="#events" type="button" role="tab" aria-controls="events"
                             aria-selected="false">{{ __('All Events') }}</button>
                     </li>
                     <li class="mr-2">
                         <button
-                            class="inline-block z-20 px-5 py-3 rounded-md font-poppins shadow-md focus:outline-none relative"
+                            class="inline-block z-20 px-2 py-1 rounded-md font-poppins shadow-md focus:outline-none relative"
                             id="online_events" data-tabs-target="#online" type="button" role="tab"
                             aria-controls="online"
                             aria-selected="false">{{ __('Online Events') }}({{ $onlinecount }})</button>
                     </li>
                     <li class="mr-2">
                         <button
-                            class="inline-block z-20 px-5 py-3 rounded-md font-poppins shadow-md focus:outline-none relative"
+                            class="inline-block z-20 px-2 py-1 rounded-md font-poppins shadow-md focus:outline-none relative"
                             id="venue_events" data-tabs-target="#venue" type="button" role="tab" aria-controls="venue"
                             aria-selected="false">{{ __('Venue Events') }}({{ $offlinecount }})</button>
                     </li>
@@ -76,8 +76,8 @@
                                             <h2 class="font-popping font-semibold text-xl leading-8 pt-2">{{ $item->name }}</h2>
                                         </a>
                                         <p class="font-poppins  font-normal text-base leading-6 text-gray pt-1">
-                                            {{ Carbon\Carbon::parse($item->start_time)->format('d M Y') }} -
-                                            {{ Carbon\Carbon::parse($item->end_time)->format('d M Y') }}
+                                            {{ Carbon\Carbon::parse($item->start_time)->format('d M Y') }} - {{ Carbon\Carbon::parse($item->start_time)->format('H:i') }}
+{{--                                            {{ Carbon\Carbon::parse($item->end_time)->format('d M Y') }}--}}
                                         </p>
                                     </div>
                                 </div>

@@ -125,14 +125,14 @@
                                         {{ Carbon\Carbon::parse($order->event->start_time)->format(' M Y') }}
                                     </p>
                                 </div>
-                                <div class="flex space-x-2">
-                                    <p class="font-poppins font-bold text-4xl leading-10 text-black">
-                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('d') }}
-                                    </p>
-                                    <p class="font-poppins font-semibold text-2xl leading-8 text-gray-200 pt-2">
-                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('M Y') }}
-                                    </p>
-                                </div>
+{{--                                <div class="flex space-x-2">--}}
+{{--                                    <p class="font-poppins font-bold text-4xl leading-10 text-black">--}}
+{{--                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('d') }}--}}
+{{--                                    </p>--}}
+{{--                                    <p class="font-poppins font-semibold text-2xl leading-8 text-gray-200 pt-2">--}}
+{{--                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('M Y') }}--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
                             </div>
                             <div class="pt-4 flex space-x-6 md:flex-nowrap sm:flex-wrap xxsm:flex-wrap">
                                 <img src="{{ asset('images/location-icon.png') }}" alt=""
@@ -178,25 +178,25 @@
                         <div class="flex justify-between">
                             <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
                             </p>
-                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">{{ $order->ticket->price }}
+                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">£ {{ $order->ticket->price }}
                             </p>
                         </div>
                         <div class="flex justify-between">
                             <p class="font-poppins font-normal text-lg leading-7 text-gray-200">
-                                {{ __('Coupon discount') }}</p>
+                                {{ __('Discount Amount') }}</p>
                             <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
-                                {{ $order->coupon_discount }}</p>
+                                £ {{ $order->coupon_discount }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p class="font-poppins font-normal text-lg leading-7 text-gray-200">
-                                {{ __('Total Tax') }}</p>
+                                {{ __('Booking Fee') }}</p>
                             <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
-                                {{ $order->tax }}</p>
+                                £ {{ $order->tax }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p class="font-poppins font-bold text-lg leading-7 text-gray-200"> {{ __('Total amount') }}
                             </p>
-                            <p class="font-poppins font-bold text-lg leading-7 text-gray-300">{{ $order->payment }}</p>
+                            <p class="font-poppins font-bold text-lg leading-7 text-gray-300">£ {{ $order->payment }}</p>
                         </div>
                         <div class="flex justify-between">
                             @if ($order->ticket_date != '')
