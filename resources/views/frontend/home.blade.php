@@ -243,8 +243,8 @@
                                         <h2 class="font-popping font-semibold text-xl leading-8 pt-2">{{ $item->name }}</h2>
                                     </a>
                                     <p class="font-poppins  font-normal text-base leading-6 text-gray pt-1">
-                                        {{ Carbon\Carbon::parse($item->start_time)->format('d M Y') }} -
-                                        {{ Carbon\Carbon::parse($item->end_time)->format('d M Y') }}
+                                        {{ Carbon\Carbon::parse($item->start_time)->format('jS') }} {{ \Carbon\Carbon::parse($item->start_time)->format('M Y') }} - {{ \Carbon\Carbon::parse($item->start_time)->format('g:i A') }}
+{{--                                        {{ Carbon\Carbon::parse($item->end_time)->format('d M Y') }}--}}
                                     </p>
                                 </div>
                             </div>
