@@ -1810,6 +1810,10 @@ function stripeSession() {
 
             selectedSeatsId: $("#selectedSeatsId").val(),
 
+            seatsIoIds: $("#seatsIoIds").val(),
+
+            
+
         },
 
         dataType: "json",

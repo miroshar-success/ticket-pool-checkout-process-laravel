@@ -68,6 +68,9 @@ use Vonage\Client as VonageClient;
 use Vonage\SMS\Message\SMS;
 use Vonage\SMS\Message\SMSCollection;
 
+use Seatsio\Region;
+use Seatsio\SeatsioClient;
+
 class FrontendController extends Controller
 {
     public function __construct()
@@ -884,6 +887,7 @@ class FrontendController extends Controller
     public function checkoutseatsio(Request $request)
     {
         $selectedSeats = json_decode($request->selectedSeats,true);
+        // $seatsIoIds = json_decode($request->seatsIoIds,true);
         $seatKeys = array_keys($selectedSeats);
         $eventDetails = Event::with(['ticket' => function ($query) use ($seatKeys) {
                             // Apply the where condition on the ticket relationship
@@ -947,13 +951,15 @@ class FrontendController extends Controller
                     }
                 }
                 $data['ticket'][$key]['singletax_total'] = array_sum($arr);
-                $data['ticket'][$key]['singletax_total'] = round($data[$ticket['id']]['singletax_total'], 2);
+                $data['ticket'][$key]['singletax_total'] = round($data['ticket'][$key]['singletax_total'], 2);
                 
                 
                 } catch (\Throwable $th) {
                     \Log::error($th);
                 }
             }
+            $data['seatsIoIds'] = $request->seatsIoIds;
+            $data['totalTickets'] = $totalTickets;
             $priceArray = array_column($data['ticket'], 'selectedseatsPrice');
             $data['price_total'] = array_sum($priceArray);
             $tax_totalArray = array_column($data['ticket'], 'singletax_total');
@@ -2035,9 +2041,14 @@ class FrontendController extends Controller
     }
     public function stripeSuccess()
     {
+        
         $request = Session::get('request');
-
         $ticket = Ticket::findOrFail($request['ticket_id']);
+        $ticketIds = null;
+        if(strpos($request['ticket_id'],',') !== false){
+            $ticketIds = $request['ticket_id'];
+            $request['ticket_id'] = explode(',',$request['ticket_id'])[0];
+        }
 
         $event = Event::find($ticket->event_id);
 
@@ -2049,6 +2060,7 @@ class FrontendController extends Controller
         $data['organization_id'] = $org->id;
         $data['order_status'] = 'Pending';
         $data['ticket_id'] = $request['ticket_id'];
+        $data['ticket_id_mutiple'] = $ticketIds;
         $data['quantity'] = $request['quantity'];
         $data['payment_type'] = 'Stripe';
         $data['payment'] = $request['payment'];
@@ -2189,6 +2201,14 @@ class FrontendController extends Controller
                 Log::info($th->getMessage());
             }
         }
+
+        
+        if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
+            $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
+            $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
+        }
+        
+
         Session::forget('request');
         return redirect()->route('myTickets');
     }

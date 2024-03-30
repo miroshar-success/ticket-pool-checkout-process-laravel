@@ -20,6 +20,8 @@
         <input type="hidden" name="phone" value="{{ auth()->guard('appuser')->user()->phone }}">
         <input type="hidden" name="name" value="{{ auth()->guard('appuser')->user()->name }}">
         <input type="hidden" name="flutterwave_key" value="{{ \App\Models\PaymentSetting::find(1)->ravePublicKey }}">
+        <input type="hidden" name="seatsIoIds" id="seatsIoIds" value="{{ $data->seatsIoIds }}">
+        
         <div id="ticketorder" class="content max-width-100">
             @csrf
             <input type="hidden" id="razor_key" name="razor_key"
@@ -51,8 +53,11 @@
             <input type="hidden" name="currency_code" id="currency_code" value="{{ $data->currency_code }}">
             <input type="hidden" name="currency" id="currency" value="{{ $data->currency }}">
             <input type="hidden" name="payment_token" id="payment_token">
-            {{-- <input type="hidden" name="ticket_id" id="ticket_id" value="{{ $data->id }}"> --}}
-            <input type="hidden" name="ticket_id" id="ticket_id" value="">
+            @php 
+                $ticketIdsArray = array_column($data->ticket,'id');
+                $ticketIds =  implode(",",$ticketIdsArray);                
+            @endphp
+            <input type="hidden" name="ticket_id" id="ticket_id" value="{{ $ticketIds }}">
             <input type="hidden" name="selectedSeats" id="selectedSeats">
             <input type="hidden" name="selectedSeatsId[]" id="selectedSeatsId">
             <input type="hidden" name="coupon_id" id="coupon_id" value="">
@@ -144,6 +149,8 @@
                                             </div>
                                             <p class="font-medium text-base leading-7 text-black text-left pt-10">
                                                 {{ __('Quantity') }}</p>
+                                            <input type="hidden" id="quantity" name="quantity"
+                                                value="{{$data->totalTickets}}">
                                             <div class="bg-transparent mt-1">
                                                 @foreach($data->ticket as $ticket)
                                                     <p class="datetime"> {{$ticket->selectedseats}} * {{$ticket->name}} </p>
