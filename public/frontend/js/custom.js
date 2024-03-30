@@ -1765,7 +1765,8 @@ $("#start_time,#end_time").flatpickr({
 function imagegallery(params) {
     var origin = window.location.origin;
 
-    $("#eventimage").attr("src", origin + "/applications/ticket-pool/public/images/upload/" + params);
+    // $("#eventimage").attr("src", origin + "/applications/ticket-pool/public/images/upload/" + params);
+    $("#eventimage").attr("src", origin + "/images/upload/" + params);
 }
 
 
