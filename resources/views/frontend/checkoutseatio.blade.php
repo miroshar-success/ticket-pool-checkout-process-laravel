@@ -39,7 +39,7 @@
             {{-- <input type="hidden" name="tax" id="tax_total" value="{{ $data->type == 'free' ? 0 : $data->tax_total }}"> --}}
             <input type="hidden" name="tax" id="tax_total" value="{{ $data->tax_total }}">
             <input type="hidden" name="payment" id="payment"
-                value="{{ $data->price_total + $data->tax_total + $data->totalAmountTax}}">
+                value="{{ $data->price_total + $data->tax_total }}">
             @php
                 $price = $data->price_total + $data->tax_total;
                 if ($data->currency_code == 'USD' || $data->currency_code == 'EUR' || $data->currency_code == 'INR') {
@@ -424,7 +424,7 @@
                                     <p
                                         class="font-semibold text-2xl leading-7 text-primary xlg:text-lg 1xl:text-2xl subtotal">
                                         {{-- @if ($data->seatmap_id == null || $data->module->is_enable == 0) --}}
-                                            {{ $currency }} {{ $data->price_total + $data->tax_total + $data->totalAmountTax}}
+                                            {{ $currency }} {{ $data->price_total + $data->tax_total }}
                                         {{-- @endif --}}
                                     </p>
                                 </div>
