@@ -941,7 +941,6 @@ class FrontendController extends Controller
                 $data['ticket'][$key]['tax'] = Tax::where([['allow_all_bill', 1], ['status', 1]])->orderBy('id', 'DESC')->get()->makeHidden(['created_at', 'updated_at']);
                 foreach ($data['ticket'][$key]['tax'] as $key => $item) {
                     if ($item->amount_type == 'percentage') {
-
                         $amount = ($item->price * $ticket['price']) / 100;
                         array_push($arr, $amount);
                     }
@@ -964,7 +963,7 @@ class FrontendController extends Controller
             $priceArray = array_column($data['ticket'], 'selectedseatsPrice');
             $data['price_total'] = array_sum($priceArray);
             $tax_totalArray = array_column($data['ticket'], 'singletax_total');
-            $data['tax_total'] = array_sum($tax_totalArray) * $totalTickets;
+            $data['tax_total'] = array_sum($tax_totalArray);
             $data['currency_code'] = $setting->currency;
             $data['currency'] = $setting->currency_sybmol;
             $data['module'] = Module::where('module', 'Seatmap')->first();
@@ -972,7 +971,6 @@ class FrontendController extends Controller
             $data['totalAmountTax'] = (Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'price']])->sum('price')) * $totalTickets;
             $data = (object) $data;
         }
-
         return view('frontend.checkoutseatio', compact('data'));
     }
     public function applyCoupon(Request $request)
