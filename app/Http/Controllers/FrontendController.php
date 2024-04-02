@@ -2223,10 +2223,10 @@ class FrontendController extends Controller
             }
         }
         
-        // if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
-        //     $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
-        //     $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
-        // }        
+        if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
+            $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
+            $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
+        }        
 
         Session::forget('request');
         return redirect()->route('myTickets');
