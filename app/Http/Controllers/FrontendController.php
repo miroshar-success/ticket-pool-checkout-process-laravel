@@ -2123,7 +2123,6 @@ class FrontendController extends Controller
                 $key = 0;
             }
         }else{
-            dd('niche');
             for ($i = 1; $i <= $request['quantity']; $i++) {
                 $child['ticket_number'] = uniqid();
                 $child['ticket_id'] = $request['ticket_id'];
