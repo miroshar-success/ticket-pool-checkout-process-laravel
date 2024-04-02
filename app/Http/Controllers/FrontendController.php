@@ -2040,12 +2040,11 @@ class FrontendController extends Controller
         return response()->json(['id' => $session->id, 'status' => 200]);
     }
     public function stripeSuccess()
-    {
-        
+    {       
         $request = Session::get('request');
         $ticket = Ticket::findOrFail($request['ticket_id']);
         $ticketIds = null;
-        if(strpos($request['ticket_id'],',') !== false && !empty($request['selectedSeatsIo'])){
+        if(!empty($request['selectedSeatsIo'])){
             $ticketIds = $request['ticket_id'];
             $request['ticket_id'] = explode(',',$request['ticket_id'])[0];
             $ticket = Ticket::findOrFail($request['ticket_id']);
@@ -2105,7 +2104,6 @@ class FrontendController extends Controller
             }
         } 
         if(!empty($request['selectedSeatsIo']) && count(json_decode($request['selectedSeatsIo'],true)) > 0){
-            
             $selectSeatsCode = json_decode($request['seatsIoIds'],true);
             $ticketIdArray = explode(',',$ticketIds);
             $allTickets = Ticket::whereIn('id',$ticketIdArray)->get();
@@ -2125,6 +2123,7 @@ class FrontendController extends Controller
                 $key = 0;
             }
         }else{
+            dd('niche');
             for ($i = 1; $i <= $request['quantity']; $i++) {
                 $child['ticket_number'] = uniqid();
                 $child['ticket_id'] = $request['ticket_id'];
@@ -2225,10 +2224,10 @@ class FrontendController extends Controller
             }
         }
         
-        if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
-            $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
-            $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
-        }        
+        // if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
+        //     $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
+        //     $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
+        // }        
 
         Session::forget('request');
         return redirect()->route('myTickets');
