@@ -2040,12 +2040,11 @@ class FrontendController extends Controller
         return response()->json(['id' => $session->id, 'status' => 200]);
     }
     public function stripeSuccess()
-    {
-        
+    {       
         $request = Session::get('request');
         $ticket = Ticket::findOrFail($request['ticket_id']);
         $ticketIds = null;
-        if(strpos($request['ticket_id'],',') !== false && !empty($request['selectedSeatsIo'])){
+        if(!empty($request['selectedSeatsIo'])){
             $ticketIds = $request['ticket_id'];
             $request['ticket_id'] = explode(',',$request['ticket_id'])[0];
             $ticket = Ticket::findOrFail($request['ticket_id']);
@@ -2105,7 +2104,6 @@ class FrontendController extends Controller
             }
         } 
         if(!empty($request['selectedSeatsIo']) && count(json_decode($request['selectedSeatsIo'],true)) > 0){
-            
             $selectSeatsCode = json_decode($request['seatsIoIds'],true);
             $ticketIdArray = explode(',',$ticketIds);
             $allTickets = Ticket::whereIn('id',$ticketIdArray)->get();
