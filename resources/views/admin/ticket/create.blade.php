@@ -188,7 +188,7 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <label>{{ __('Ticket Key') }}</label>
-                                        <input type="number" name="ticket_key" min="1" required
+                                        <input type="number" name="ticket_key" min="1"
                                             placeholder="{{ __('Ticket Key') }}" id="ticket_key"
                                             value="{{ old('ticket_key') }}"
                                             class="form-control @error('ticket_key')? is-invalid @enderror">

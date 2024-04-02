@@ -111,6 +111,9 @@
                                             <th>#</th>
                                             <th class="text-center">{{ __('Ticket Name') }}</th>
                                             <th class="text-center">{{ __('Ticket Number') }}</th>
+                                            @if (!empty($order->ticket_id_mutiple))
+                                                <th class="text-center">{{ __('Seat Number') }}</th>
+                                            @endif
                                             <th class="text-center">{{ __('Price') }}</th>
                                         </tr>
                                         @foreach ($order->ticket_data as $item)
@@ -124,6 +127,9 @@
                                                     @endif
                                                 </td>
                                                 <td class="text-center">{{ $item->ticket_number }}</td>
+                                                @if (!empty($item->ticket_number_seatsio))
+                                                    <td class="text-center">{{ $item->ticket_number_seatsio }}</td>
+                                                @endif
                                                 <td class="text-center">                                                    
                                                     @if (!empty($item->ticket_number_seatsio))
                                                         {{ $currency . $item->ticket->price }}
