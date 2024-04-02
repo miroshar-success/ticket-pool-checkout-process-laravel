@@ -282,7 +282,7 @@ class OrderController extends Controller
     {
         $order = Order::with(['customer', 'event', 'organization', 'ticket'])->find($order_id);
         $order->tax_data = OrderTax::where('order_id', $order->id)->get();
-        $order->ticket_data = OrderChild::where('order_id', $order->id)->get();
+        $order->ticket_data = OrderChild::with(['ticket'])->where('order_id', $order->id)->get();
         $order->maintax = array();
         foreach ($order->tax_data as $item) {
             $tax = Tax::find($item->tax_id)->get();

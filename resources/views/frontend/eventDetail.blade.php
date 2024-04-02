@@ -223,9 +223,11 @@
                         <div id="chart" style="width:1000px; height:450px;"></div>
                         <script src="https://cdn-eu.seatsio.net/chart.js"></script>
                         <script>
+
                             var selectedSeats = {};
                             var pricing = {!! $json_pricing !!};
                             var seatsIoIds = [];
+
                             new seatsio.SeatingChart({
                                 divId: 'chart',
                                 workspaceKey: '74c425c5-1af8-4ffc-9ad0-3aa488fe13a6',
@@ -241,7 +243,12 @@
                                     // add the selected seat id to the array
                                     seatsIoIds.push(object.label);
                                     var ticketKey = object.category.key;
-                                    selectedSeats[ticketKey] = (selectedSeats[ticketKey] || 0) + 1; // Increment count or initialize to 1
+                                    // Increment count and add selected seat label
+                                    if (!selectedSeats.hasOwnProperty(ticketKey)) {
+                                    selectedSeats[ticketKey] = { count: 0, seats: [] };
+                                }
+                                    selectedSeats[ticketKey].count++;
+                                    selectedSeats[ticketKey].seats.push(object.label);
                                     showPaymentbutton();
                                 },
                                 onObjectDeselected: function (object) {
@@ -250,9 +257,10 @@
                                     if (index !== -1) seatsIoIds.splice(index, 1);
                                     
                                     var ticketKey = object.category.key;
-                                    if (selectedSeats[ticketKey]) {
-                                        selectedSeats[ticketKey]--;
-                                        if (selectedSeats[ticketKey] === 0) {
+                                    if (selectedSeats.hasOwnProperty(ticketKey) && selectedSeats[ticketKey].count > 0) {
+                                        selectedSeats[ticketKey].count--;
+                                        selectedSeats[ticketKey].seats.splice(selectedSeats[ticketKey].seats.indexOf(object.label), 1);
+                                        if (selectedSeats[ticketKey].count === 0) {
                                             delete selectedSeats[ticketKey];
                                         }
                                     }
@@ -267,7 +275,7 @@
                                 }
                                 $("#selectedSeatsInput").val(JSON.stringify(selectedSeats));
                                 $("#seatsIoIds").val(JSON.stringify(seatsIoIds));
-                                // console.log('Selected Seats:', selectedSeats);
+                                console.log('Selected Seats:', selectedSeats);
                             }
                         </script>
                     @else

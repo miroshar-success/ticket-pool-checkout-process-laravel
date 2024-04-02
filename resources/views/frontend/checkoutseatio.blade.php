@@ -154,7 +154,7 @@
                                                 value="{{$data->totalTickets}}">
                                             <div class="bg-transparent mt-1">
                                                 @foreach($data->ticket as $ticket)
-                                                    <p class="datetime"> {{$ticket->selectedseats}} * {{$ticket->name}} </p>
+                                                    <p class="datetime"> {{$ticket->selectedseatsCount}} * {{$ticket->name}} </p>
                                                 @endforeach
                                             </div>
 
