@@ -15,6 +15,7 @@ class OrderChild extends Model
         'ticket_number',
         'status',
         'ticket_date',
+        'ticket_number_seatsio'
     ];
 
     protected $table = 'order_child';
@@ -23,5 +24,8 @@ class OrderChild extends Model
     {
         $order  = Order::with(['customer:id,name,last_name,email,image'])->find($this->attributes['tax_id']);
     }
-
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class);
+    }
 }

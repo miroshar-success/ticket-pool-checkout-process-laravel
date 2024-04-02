@@ -116,10 +116,21 @@
                                         @foreach ($order->ticket_data as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td class="text-center">{{ $order->ticket->name }}</td>
-                                                <td class="text-center">{{ $item->ticket_number }}</td>
                                                 <td class="text-center">
-                                                    {{ $currency . $order->ticket->price }}</td>
+                                                    @if (!empty($item->ticket_number_seatsio))
+                                                        {{ $item->ticket->name }}
+                                                    @else
+                                                        {{ $order->ticket->name }}
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">{{ $item->ticket_number }}</td>
+                                                <td class="text-center">                                                    
+                                                    @if (!empty($item->ticket_number_seatsio))
+                                                        {{ $currency . $item->ticket->price }}
+                                                    @else
+                                                        {{ $currency . $order->ticket->price }}
+                                                    @endif
+                                                </td>
                                         @endforeach
                                     </table>
                                 </div>

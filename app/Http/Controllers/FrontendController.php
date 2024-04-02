@@ -901,11 +901,11 @@ class FrontendController extends Controller
             $setting = Setting::first();
             foreach($eventDetails['ticket'] as $key => $ticket){
                 try { 
-                $totalTickets += $selectedSeats[$ticket['ticket_key']];
+                $totalTickets += $selectedSeats[$ticket['ticket_key']]['count'];
                          
                 $data['ticket'][$key] = $ticket;
-                $data['ticket'][$key]['selectedseats'] = $selectedSeats[$ticket['ticket_key']];
-                $data['ticket'][$key]['selectedseatsPrice'] = $selectedSeats[$ticket['ticket_key']] * $ticket['price']; 
+                $data['ticket'][$key]['selectedseatsCount'] = $selectedSeats[$ticket['ticket_key']]['count'];
+                $data['ticket'][$key]['selectedseatsPrice'] = $selectedSeats[$ticket['ticket_key']]['count'] * $ticket['price']; 
                 
                 SEOMeta::setTitle($ticket['name'])
                 ->setDescription($ticket['description'])
@@ -971,7 +971,7 @@ class FrontendController extends Controller
             $data['totalAmountTax'] = (Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'price']])->sum('price')) * $totalTickets;
             $data = (object) $data;
         }
-        //dd($data);
+        // dd($data);
         return view('frontend.checkoutseatio', compact('data'));
     }
     public function applyCoupon(Request $request)
@@ -1782,7 +1782,7 @@ class FrontendController extends Controller
             $temp_tax[] = Tax::find($value->tax_id);
             $taxes = $temp_tax;
         }
-        $orderchild = OrderChild::where('order_id', $order->id)->get();
+        $orderchild = OrderChild::with(['ticket'])->where('order_id', $order->id)->get();
         $review = Review::where('order_id', $order->id)->first();
         return view('frontend.userOrderTicket', compact('order', 'taxes', 'review', 'orderchild'));
     }
@@ -2104,20 +2104,25 @@ class FrontendController extends Controller
                 }
             }
         } 
-        if(!empty($request['selectedSeatsIo'])){
+        if(!empty($request['selectedSeatsIo']) && count(json_decode($request['selectedSeatsIo'],true)) > 0){
             
+            $selectSeatsCode = json_decode($request['seatsIoIds'],true);
             $ticketIdArray = explode(',',$ticketIds);
             $allTickets = Ticket::whereIn('id',$ticketIdArray)->get();
-            $selectedSeatsIo = json_decode($request['selectedSeatsIo'],true);
+            $selectedSeatsIocounts = json_decode($request['selectedSeatsIo'],true);
+            $key = 0;
             foreach($allTickets as $ticket){ 
-                $totalTickets = $selectedSeatsIo[$ticket['ticket_key']];
+                $totalTickets = $selectedSeatsIocounts[$ticket['ticket_key']]['count'];
                 for ($i = 1; $i <= $totalTickets; $i++) {
                     $child['ticket_number'] = uniqid();
+                    $child['ticket_number_seatsio'] = $selectedSeatsIocounts[$ticket['ticket_key']]['seats'][$key];
                     $child['ticket_id'] = $ticket['id'];
                     $child['order_id'] = $order->id;
                     $child['customer_id'] = Auth::guard('appuser')->user()->id;
                     OrderChild::create($child);
+                    $key++;
                 }
+                $key = 0;
             }
         }else{
             for ($i = 1; $i <= $request['quantity']; $i++) {
@@ -2219,13 +2224,11 @@ class FrontendController extends Controller
                 Log::info($th->getMessage());
             }
         }
-
         
         if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
             $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
             $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
-        }
-        
+        }        
 
         Session::forget('request');
         return redirect()->route('myTickets');

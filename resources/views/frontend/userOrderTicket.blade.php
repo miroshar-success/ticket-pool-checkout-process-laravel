@@ -160,6 +160,14 @@
                                     <p class="font-poppins font-normal leading-7 text-gray ml-5">
                                         {{ $item->ticket_number }}
                                     </p>
+                                    @if (!empty($item->ticket_number_seatsio))
+                                        <p class="font-poppins font-semibold text-2xl leading-8 text-black mt-5">
+                                            {{ __('Seat Number') }}
+                                        </p>
+                                        <p class="font-poppins font-normal leading-7 text-gray ml-5">
+                                            {{ $item->ticket_number_seatsio }}
+                                        </p>
+                                    @endif
                                     {!! QrCode::size(180)->generate($item->ticket_number) !!}
                                 </div>
                             </div>
@@ -175,12 +183,32 @@
                             <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
                                 {{ $order->quantity }}</p>
                         </div>
-                        <div class="flex justify-between">
-                            <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
-                            </p>
-                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">£ {{ $order->ticket->price }}
-                            </p>
-                        </div>
+                        
+                            @if (!empty($item->ticket_number_seatsio))
+                                @php $ticketCheck = []; @endphp
+                                @foreach ($orderchild as $item)
+                                    @if(!in_array($item->ticket_id,$ticketCheck))
+                                        <div class="flex justify-between">
+                                            <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
+                                            </p>
+                                            
+                                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">£ {{ $item->ticket->price }}
+                                            </p>
+                                        </div>
+                                        @php $ticketCheck[] = $item->ticket_id; @endphp
+                                    @endif
+                                @endforeach
+                            @else
+                                <div class="flex justify-between">
+                                    <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
+                                    </p>
+                                    
+                                    <p class="font-poppins font-medium text-lg leading-7 text-gray-300">£ {{ $order->ticket->price }}
+                                    </p>
+                                </div>
+                            @endif
+                            
+                        
                         <div class="flex justify-between">
                             <p class="font-poppins font-normal text-lg leading-7 text-gray-200">
                                 {{ __('Discount Amount') }}</p>
