@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailTemplateController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RoleController;
@@ -167,6 +168,7 @@ Route::group(['middleware' => ['auth']], function () {
         'category' =>  CategoryController::class,
         // 'location' =>  LocationController::class,
         'events' =>  EventController::class,
+        'email' =>  EmailTemplateController::class,
         'notification-template' =>  NotificationTemplateController::class,
         'language' => LanguageController::class,
         'module' => ModuleController::class,
@@ -180,9 +182,13 @@ Route::get('/get-notification', [NotificationTemplateController::class, 'getNoti
 Route::post('/send-notification', [NotificationTemplateController::class, 'sendNotification']);
 Route::get('/delete-notification/{id}', [NotificationTemplateController::class, 'deleteNotification']);
 
+
 Route::get('/create-payment/{id}', [UserController::class, 'makePayment']);
 Route::any('/payment/{id}', [UserController::class, 'initialize'])->name('pay');
 Route::get('/rave/callback/{id}', [UserController::class, 'callback'])->name('callback');
 
 Route::get('FlutterWavepayment/{id}', [UserController::class, 'FlutterWavepayment']);
 Route::get('transction_verify/{id}', [UserController::class, 'transction_verify']);
+Route::post('/email/{id}/resend', [EmailTemplateController::class, 'resendEmail'])->name('email.resend');
+
+Route::get('testing-email',[EmailTemplateController::class,'testEmail']);

@@ -105,21 +105,22 @@
                                     </div>
                                 @endif
                                 <div class="scanner">
-                                <div class="form-group">
-                                    <label>{{ __('Scanner') }} {{ __('(Requierd)')}}</label>
-                                    <select name="scanner_id"  class="form-control scanner_id select2">
-                                        <option value="">{{ __('Choose Scanner') }}</option>
-                                        @foreach ($scanner as $item)
-                                            <option value="{{ $item->id }}"
-                                                {{ $item->id == old('scanner_id') ? 'Selected' : '' }}>
-                                                {{ $item->first_name . ' ' . $item->last_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('scanner_id')
+                                    <div class="form-group">
+                                        <label>{{ __('Scanner') }} {{ __('(Required)')}}</label>
+                                        <select name="scanner_id[]" class="form-control scanner_id select2" multiple>
+                                            <option disabled>{{ __('Choose Scanner') }}</option>
+                                            @foreach ($scanner as $item)
+                                                <option value="{{ $item->id }}"
+                                                        {{ in_array($item->id, old('scanner_id', [])) ? 'selected' : '' }}>
+                                                    {{ $item->first_name . ' ' . $item->last_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('scanner_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                        @enderror
+                                    </div>
+
                                 </div>
-                            </div>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
