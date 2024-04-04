@@ -108,20 +108,27 @@
                                 @endif
                                 <div class="scanner {{ $event->type == 'online' ? 'hide' : 'demo' }}">
                                     <div class="form-group">
-                                        <label>{{ __('Scanner') }} {{ __('(Requierd)') }}</label>
-                                        <select name="scanner_id" class="form-control scanner_id select2">
-                                            <option value="">{{ __('Choose Scanner') }}</option>
+                                        <label>{{ __('Scanner') }} {{ __('(Required)') }}</label>
+                                        <select name="scanner_id[]" class="form-control scanner_id select2" multiple>
                                             @foreach ($scanner as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ $item->id == $event->scanner_id ? 'Selected' : '' }}>
-                                                    {{ $item->first_name . ' ' . $item->last_name }}</option>
+                                                @php
+                                                    $selected = false;
+                                                    $eventScannerIds = explode(',', $event->scanner_id);
+                                                    if (in_array($item->id, $eventScannerIds)) {
+                                                        $selected = true;
+                                                    }
+                                                @endphp
+                                                <option value="{{ $item->id }}" {{ $selected ? 'selected' : '' }}>
+                                                    {{ $item->first_name . ' ' . $item->last_name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('scanner_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">

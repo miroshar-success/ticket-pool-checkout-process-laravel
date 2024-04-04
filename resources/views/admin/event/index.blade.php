@@ -81,7 +81,23 @@
                                                     </td>
                                                 @endif
                                                 @if (Auth::user()->hasRole('Organizer'))
-                                                    <td>{{ $item->scanner == null ? '' : $item->scanner->first_name . ' ' . $item->scanner->last_name }}
+                                                    <td>
+                                                        @if($item->scanner_id)
+                                                            @php
+                                                                $scannerIds = explode(',', $item->scanner_id);
+//                                                                @dd($scannerIds);
+                                                                $scannerNames = [];
+                                                                foreach ($scannerIds as $scannerId) {
+                                                                    $scanner = \App\Models\User::find($scannerId);
+                                                                    if ($scanner) {
+                                                                        $scannerNames[] = $scanner->first_name . ' ' . $scanner->last_name;
+                                                                    }
+                                                                }
+                                                            @endphp
+                                                            {{ implode(', ', $scannerNames) }}
+                                                        @else
+                                                            No scanners
+                                                        @endif
                                                     </td>
                                                 @endif
                                                 <td>
