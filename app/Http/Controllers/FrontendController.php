@@ -1159,7 +1159,7 @@ class FrontendController extends Controller
         $or_notification['organizer_id'] =  $org->id;
         $or_notification['user_id'] = null;
         $or_notification['order_id'] = $order->id;
-        $or_notification['title'] = 'New Ticket Booked';
+        $or_notification['title'] = 'Order Notification';
         $or_notification['message'] = $or_message1;
         Notification::create($or_notification);
         if ($setting->push_notification == 1) {
