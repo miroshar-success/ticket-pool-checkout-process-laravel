@@ -1109,20 +1109,18 @@ class FrontendController extends Controller
         $user = AppUser::find($order->customer_id);
         $setting = Setting::find(1);
 
-        // for user notification
-        $message = NotificationTemplate::where('title', 'Book Ticket')->first()->message_content;
-        $detail['user_name'] = $user->name . ' ' . $user->last_name;
-        $detail['quantity'] = $request->quantity;
-        $detail['event_name'] = Event::find($order->event_id)->name;
-        $detail['date'] = Event::find($order->event_id)->start_time->format('d F Y h:i a');
-        $detail['app_name'] = $setting->app_name;
-        $noti_data = ["{{user_name}}", "{{quantity}}", "{{event_name}}", "{{date}}", "{{app_name}}"];
-        $message1 = str_replace($noti_data, $detail, $message);
+        // Assuming the email template in the database has been updated, the rest of the process should be compatible
+        // Preparing the replacement data for the email template
+        $details['quantity'] = $request['quantity'];  // Quantity of tickets
+        $details['event_name'] = Event::find($order->event_id)->name;  // Name of the event
+        $details['date'] = Event::find($order->event_id)->start_time->format('d F Y h:i a');  // Event start time
+
+        // for user notification (if needed, depending on the system setup)
         $notification = array();
-        $notification['organizer_id'] = null;
         $notification['user_id'] = $user->id;
         $notification['order_id'] = $order->id;
-        $notification['title'] = 'Ticket Booked';
+        $notification['title'] = 'You’ve got tickets!';
+        $message1 = "Your {$details['quantity']} ticket(s) for the following event: {$details['event_name']} on {$details['date']} is successfully confirmed!\n\nEnjoy this event!\n\nTicket Pool";
         $notification['message'] = $message1;
         Notification::create($notification);
         if ($setting->push_notification == 1) {
@@ -1130,23 +1128,21 @@ class FrontendController extends Controller
                 (new AppHelper)->sendOneSignal('user', $user->device_token, $message1);
             }
         }
+
         // for user mail
         $ticket_book = NotificationTemplate::where('title', 'Book Ticket')->first();
-        $details['user_name'] = $user->name . ' ' . $user->last_name;
-        $details['quantity'] = $request->quantity;
-        $details['event_name'] = Event::find($order->event_id)->name;
-        $details['date'] = Event::find($order->event_id)->start_time->format('d F Y h:i a');
-        $details['app_name'] = $setting->app_name;
         if ($setting->mail_notification == 1) {
-
             try {
-                $qrcode = $order->order_id;
+                $qrcode = $order->order_id;  // Generate QR code if necessary
+                // Send email with the new template content
                 Mail::to($user->email)->send(new TicketBook($ticket_book->mail_content, $details, $ticket_book->subject, $qrcode));
             } catch (\Throwable $th) {
                 Log::info($th->getMessage());
             }
+            // Send mail if this is part of the process
             $this->sendMail($order->id);
         }
+        
 
         // for Organizer notification
         $org =  User::find($order->organization_id);
