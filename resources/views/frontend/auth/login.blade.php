@@ -193,6 +193,8 @@
                             {{ __('Don’t have an account?') }} </h5>
                         <a href="{{ url('/user/register') }}" class="text-white text-underline text-medium">{{ __('Create Account') }}</a>
                     </div>
+                        <p>Powered by Warehouse Worship</p>
+
                 </div>
             </div>
 

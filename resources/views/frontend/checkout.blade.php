@@ -56,6 +56,8 @@
             <input type="hidden" class="tax_data" id="tax_data" name="tax_data" value="{{ $data->tax }}">
             <input type="hidden" name="event_id" value="{{ $data->event_id }}">
             <input type="hidden" name="ticketname" id="ticketname" value="{{ $data->name }}">
+            <input type="hidden" name="seatsIoIds" id="seatsIoIds" value="">
+            <input type="hidden" name="selectedSeatsIo" id="selectedSeatsIo" value="">
             <div
                 class="mt-10 3xl:mx-52 2xl:mx-28 1xl:mx-28 xl:mx-36 xlg:mx-32 lg:mx-36 xxmd:mx-24 xmd:mx-32 md:mx-28 sm:mx-20 msm:mx-16 xsm:mx-10 xxsm:mx-5 z-10 relative">
                 <div
@@ -66,39 +68,40 @@
                             class="flex 3xl:flex-row 2xl:flex-nowrap 1xl:flex-nowrap xl:flex-nowrap xlg:flex-wrap flex-wrap justify-between 3xl:pt-5 xl:pt-5 gap-x-5 xl:w-full xlg:w-full">
                             <div class="w-full mr-10">
                                 <div
+{{--                                        @dd(asset('images/upload/' . $data->event->image));--}}
                                     class="w-full shadow-lg p-5 rounded-lg flex 3xl:flex-nowrap md:flex-wrap xxmd:flex-nowrap sm:flex-wrap msm:flex-wrap xsm:flex-wrap xxsm:flex-wrap bg-white xlg:w-full xmd:w-full 3xl:mb-0 xl:mb-0 xlg:mb-5 xxsm:mb-5">
                                     <img src="{{ asset('images/upload/' . $data->event->image) }}" alt=""
                                         class="rounded-lg object-cover" width="230" height="230">
                                     <div class="ml-4 2xl:w-[60%] xl:w-full xlg:w-full xmd:w-full xxmd:w-[80%]">
 
-                                        <p class="event-title font-bold text-4xl leading-8 text-left pt-3 text-black-100">
+                                        <p class="event-title font-bold font-26 font-18 leading-8 text-left pt-3 text-black-100">
                                             {{ $data->event->name }}</p>
 
                                             <div class="bg-white">
-                                                <p class="mt-5 section-title font-semibold text-2xl leading-8 text-black">{{ __('Date and time') }}</p>
+                                                <p class="mt-5 font-semibold text-2x leading-8 text-black">{{ __('Date and time') }}</p>
                                                 <div>
                                                     <div class="pt-2 flex space-x-3 md:flex-nowrap sm:flex-wrap xxsm:flex-wrap">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#3A3247" viewBox="0 0 24 24"><path d="M17 11h2V6h-2V4h-2v2H9V4H7v2H5v13h6v-2H7v-7h10zm0 1c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4m-.6 5.9 2.9-2.9-.9-.9-2.1 2.1-.7-.8-.8.8z" clip-rule="evenodd"></path></svg>
                                                         <div class="flex space-x-2 pl-3">
                                                             <p class="datetime">
-                                                                {{ Carbon\Carbon::parse($data->start_time)->format('d') }}
+                                                                {{ \Carbon\Carbon::parse($data->event->start_time)->format('jS') }}
                                                             </p>
                                                             <p class="datetime">
-                                                                {{ Carbon\Carbon::parse($data->start_time)->format('M y') }}</p>
+                                                                {{ Carbon\Carbon::parse($data->event->start_time)->format('M Y') }}</p>
                                                         </div>
                                                         <p class="datetime">-</p>
                                                         <div class="flex space-x-2">
                                                             <p class="datetime">
-                                                                {{ Carbon\Carbon::parse($data->end_time)->format('d') }}
+                                                                {{ Carbon\Carbon::parse($data->event->start_time)->format('g:i A') }}
                                                             </p>
-                                                            <p class="datetime">
-                                                                {{ Carbon\Carbon::parse($data->end_time)->format('M y') }}</p>
+{{--                                                            <p class="datetime">--}}
+{{--                                                                {{ Carbon\Carbon::parse($data->end_time)->format('M y') }}</p>--}}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="mt-5 bg-white location-section">
-                                                <p class="section-title font-semibold text-2xl leading-8 text-black">{{ __('Location') }}</p>
+                                                <p class="font-semibold text-2x leading-8 text-black">{{ __('Location') }}</p>
                                                 <div>
                                                     <div class="pt-2 flex space-x-6 md:flex-nowrap sm:flex-wrap xxsm:flex-wrap">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#3A3247" viewBox="0 0 24 24"><path d="M12.067 4C8.934 4 6.4 6.504 6.4 9.6c0 4.2 5.667 10.4 5.667 10.4s5.667-6.2 5.667-10.4c0-3.096-2.534-5.6-5.667-5.6m0 7.6c-1.117 0-2.024-.896-2.024-2s.907-2 2.024-2 2.024.896 2.024 2-.907 2-2.024 2" clip-rule="evenodd"></path></svg>
@@ -142,7 +145,7 @@
                                     <div class="md:w-[15%] sm:w-full pt-14">
                                         @if ($data->type == 'paid')
                                             <p class="paid-tag text-sm leading-7 text-left">
-                                                {{ __('Paid') }}</p>
+                                                {{ __('PRICE') }}</p>
                                         @else
                                             <p class="paid-tag text-sm leading-7 text-left">
                                                 {{ __('Free') }}</p>
@@ -386,7 +389,7 @@
                                     <input type="text" value="" name="coupon_code" id="coupon_id"
                                         class="focus:outline-none font-normal text-base leading-6 text-white-100 ml-5 1xl:w-44 xl:w-36
                             xlg:w-28"
-                                        placeholder="{{ __('Coupon Code') }}">
+                                        placeholder="{{ __('Discount code') }}">
                                     <button type="button" id="apply" name="apply"
                                         class="font-medium text-base leading-6 text-primary focus:outline-none mr-5">{{ __('Apply') }}</button>
                                 </div>
@@ -442,7 +445,7 @@
                                 <div class="flex justify-between border-dashed border-b border-gray-light pb-5">
                                     <p class="font-normal text-lg leading-7 text-gray-200">
                                         {{ __('Coupon discount') }}</p>
-                                    <p class="font-medium text-lg leading-7 text-gray-300 discount">00.00</p>
+                                    <p class="font-medium text-lg leading-7 text-gray-300 discount">£ 00.00</p>
                                 </div>
                                 <div class="flex justify-between">
                                     <p

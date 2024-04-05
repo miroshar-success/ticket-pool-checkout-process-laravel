@@ -66,7 +66,7 @@
                                 </a>
                                 <div
                                     class="categoriesClass hidden rigin-top-left absolute left-0 w-44 rounded-md shadow-2xl z-30">
-                                    <div class="rounded-md bg-white shadow-lg p-3">
+                                    <div class="rounded-md bg-primary shadow-lg p-3">
                                         <div class="">
                                             @php
                                                 if (!isset($catactive)) {

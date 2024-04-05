@@ -30,6 +30,7 @@ class Event extends Model
         'scanner_id',
         'tags',
         'url',
+        'seatsio_eventId',
     ];
 
     protected $table = 'events';

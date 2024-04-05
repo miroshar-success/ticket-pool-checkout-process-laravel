@@ -125,14 +125,14 @@
                                         {{ Carbon\Carbon::parse($order->event->start_time)->format(' M Y') }}
                                     </p>
                                 </div>
-                                <div class="flex space-x-2">
-                                    <p class="font-poppins font-bold text-4xl leading-10 text-black">
-                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('d') }}
-                                    </p>
-                                    <p class="font-poppins font-semibold text-2xl leading-8 text-gray-200 pt-2">
-                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('M Y') }}
-                                    </p>
-                                </div>
+{{--                                <div class="flex space-x-2">--}}
+{{--                                    <p class="font-poppins font-bold text-4xl leading-10 text-black">--}}
+{{--                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('d') }}--}}
+{{--                                    </p>--}}
+{{--                                    <p class="font-poppins font-semibold text-2xl leading-8 text-gray-200 pt-2">--}}
+{{--                                        {{ Carbon\Carbon::parse($order->event->end_time)->format('M Y') }}--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
                             </div>
                             <div class="pt-4 flex space-x-6 md:flex-nowrap sm:flex-wrap xxsm:flex-wrap">
                                 <img src="{{ asset('images/location-icon.png') }}" alt=""
@@ -160,6 +160,14 @@
                                     <p class="font-poppins font-normal leading-7 text-gray ml-5">
                                         {{ $item->ticket_number }}
                                     </p>
+                                    @if (!empty($item->ticket_number_seatsio))
+                                        <p class="font-poppins font-semibold text-2xl leading-8 text-black mt-5">
+                                            {{ __('Seat Number') }}
+                                        </p>
+                                        <p class="font-poppins font-normal leading-7 text-gray ml-5">
+                                            {{ $item->ticket_number_seatsio }}
+                                        </p>
+                                    @endif
                                     {!! QrCode::size(180)->generate($item->ticket_number) !!}
                                 </div>
                             </div>
@@ -175,28 +183,48 @@
                             <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
                                 {{ $order->quantity }}</p>
                         </div>
+                        
+                            @if (!empty($item->ticket_number_seatsio))
+                                @php $ticketCheck = []; @endphp
+                                @foreach ($orderchild as $item)
+                                    @if(!in_array($item->ticket_id,$ticketCheck))
+                                        <div class="flex justify-between">
+                                            <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
+                                            </p>
+                                            
+                                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">£ {{ $item->ticket->price }}
+                                            </p>
+                                        </div>
+                                        @php $ticketCheck[] = $item->ticket_id; @endphp
+                                    @endif
+                                @endforeach
+                            @else
+                                <div class="flex justify-between">
+                                    <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
+                                    </p>
+                                    
+                                    <p class="font-poppins font-medium text-lg leading-7 text-gray-300">£ {{ $order->ticket->price }}
+                                    </p>
+                                </div>
+                            @endif
+                            
+                        
                         <div class="flex justify-between">
-                            <p class="font-poppins font-normal text-lg leading-7 text-gray-200">{{ __('Tickets Price') }}
-                            </p>
-                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">{{ $order->ticket->price }}
-                            </p>
+                            <p class="font-poppins font-normal text-lg leading-7 text-gray-200">
+                                {{ __('Discount Amount') }}</p>
+                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
+                                £ {{ $order->coupon_discount }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p class="font-poppins font-normal text-lg leading-7 text-gray-200">
-                                {{ __('Coupon discount') }}</p>
+                                {{ __('Booking Fee') }}</p>
                             <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
-                                {{ $order->coupon_discount }}</p>
-                        </div>
-                        <div class="flex justify-between">
-                            <p class="font-poppins font-normal text-lg leading-7 text-gray-200">
-                                {{ __('Total Tax') }}</p>
-                            <p class="font-poppins font-medium text-lg leading-7 text-gray-300">
-                                {{ $order->tax }}</p>
+                                £ {{ $order->tax }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p class="font-poppins font-bold text-lg leading-7 text-gray-200"> {{ __('Total amount') }}
                             </p>
-                            <p class="font-poppins font-bold text-lg leading-7 text-gray-300">{{ $order->payment }}</p>
+                            <p class="font-poppins font-bold text-lg leading-7 text-gray-300">£ {{ $order->payment }}</p>
                         </div>
                         <div class="flex justify-between">
                             @if ($order->ticket_date != '')

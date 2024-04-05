@@ -68,6 +68,9 @@ use Vonage\Client as VonageClient;
 use Vonage\SMS\Message\SMS;
 use Vonage\SMS\Message\SMSCollection;
 
+use Seatsio\Region;
+use Seatsio\SeatsioClient;
+
 class FrontendController extends Controller
 {
     public function __construct()
@@ -880,6 +883,97 @@ class FrontendController extends Controller
         $data->totalAmountTax = Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'price']])->sum('price');
         return view('frontend.checkout', compact('data'));
     }
+
+    public function checkoutseatsio(Request $request)
+    {
+        $selectedSeats = json_decode($request->selectedSeats,true);
+        // $seatsIoIds = json_decode($request->seatsIoIds,true);
+        $seatKeys = array_keys($selectedSeats);
+        $eventDetails = Event::with(['ticket' => function ($query) use ($seatKeys) {
+                            // Apply the where condition on the ticket relationship
+                            $query->whereIn('ticket_key',$seatKeys);
+                        }])->where('seatsio_eventId',$request->seatsio_eventId)->first();
+        
+        $data = array();
+        $data['event'] = $eventDetails;
+        $totalTickets = 0;
+        if(!empty($eventDetails['ticket'])){
+            $setting = Setting::first();
+            foreach($eventDetails['ticket'] as $key => $ticket){
+                try { 
+                $totalTickets += $selectedSeats[$ticket['ticket_key']]['count'];
+                         
+                $data['ticket'][$key] = $ticket;
+                $data['ticket'][$key]['selectedseatsCount'] = $selectedSeats[$ticket['ticket_key']]['count'];
+                $data['ticket'][$key]['selectedseatsPrice'] = $selectedSeats[$ticket['ticket_key']]['count'] * $ticket['price']; 
+                
+                SEOMeta::setTitle($ticket['name'])
+                ->setDescription($ticket['description'])
+                ->addKeyword([
+                    $setting->app_name,
+                    $ticket['name'],
+                    $data['event']['name'],
+                    $data['event']['tags']
+                ]);
+                
+                OpenGraph::setTitle($ticket['name'])
+                    ->setDescription($ticket['description'])
+                    ->setUrl(url()->current());
+
+                JsonLd::setTitle($ticket['name'])
+                    ->setDescription($ticket['description']);
+
+                SEOTools::setTitle($ticket['name']);
+                SEOTools::setDescription($ticket['description']);
+                SEOTools::opengraph()->setUrl(url()->current());
+                SEOTools::setCanonical(url()->current());
+                SEOTools::opengraph()->addProperty('keywords', [
+                    $setting->app_name,
+                    $ticket['name'],
+                    $data['event']['name'],
+                    $data['event']['tags']
+                ]);
+                SEOTools::jsonLd()->addImage($setting->imagePath . $setting->logo);
+                
+                $arr = [];
+                $used = Order::where('ticket_id', $ticket['id'])->sum('quantity');
+                $data['ticket'][$key]['available_qty'] = $ticket['quantity'] - $used;
+                $data['ticket'][$key]['tax'] = Tax::where([['allow_all_bill', 1], ['status', 1]])->orderBy('id', 'DESC')->get()->makeHidden(['created_at', 'updated_at']);
+                foreach ($data['ticket'][$key]['tax'] as $key => $item) {
+                    if ($item->amount_type == 'percentage') {
+                        $amount = ($item->price * $ticket['price']) / 100;
+                        array_push($arr, $amount);
+                    }
+                    if ($item->amount_type == 'price') {
+                        $amount = $item->price;
+                        array_push($arr, $amount);
+                    }
+                }
+                $data['ticket'][$key]['singletax_total'] = array_sum($arr);
+                $data['ticket'][$key]['singletax_total'] = round($data['ticket'][$key]['singletax_total'], 2);
+                
+                
+                } catch (\Throwable $th) {
+                    \Log::error($th);
+                }
+            }
+            $data['selectedSeatsIo'] = $request->selectedSeats;
+            $data['seatsIoIds'] = $request->seatsIoIds;
+            $data['totalTickets'] = $totalTickets;
+            $priceArray = array_column($data['ticket'], 'selectedseatsPrice');
+            $data['price_total'] = array_sum($priceArray);
+            $tax_totalArray = array_column($data['ticket'], 'singletax_total');
+            $data['tax_total'] = array_sum($tax_totalArray) * $totalTickets;
+            $data['currency_code'] = $setting->currency;
+            $data['currency'] = $setting->currency_sybmol;
+            $data['module'] = Module::where('module', 'Seatmap')->first();
+            $data['totalPersTax'] = (Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'percentage']])->sum('price'))  * $totalTickets;
+            $data['totalAmountTax'] = (Tax::where([['allow_all_bill', 1], ['status', 1], ['amount_type', 'price']])->sum('price')) * $totalTickets;
+            $data = (object) $data;
+        }
+        // dd($data);
+        return view('frontend.checkoutseatio', compact('data'));
+    }
     public function applyCoupon(Request $request)
     {
         $total = $request->total;
@@ -1015,20 +1109,18 @@ class FrontendController extends Controller
         $user = AppUser::find($order->customer_id);
         $setting = Setting::find(1);
 
-        // for user notification
-        $message = NotificationTemplate::where('title', 'Book Ticket')->first()->message_content;
-        $detail['user_name'] = $user->name . ' ' . $user->last_name;
-        $detail['quantity'] = $request->quantity;
-        $detail['event_name'] = Event::find($order->event_id)->name;
-        $detail['date'] = Event::find($order->event_id)->start_time->format('d F Y h:i a');
-        $detail['app_name'] = $setting->app_name;
-        $noti_data = ["{{user_name}}", "{{quantity}}", "{{event_name}}", "{{date}}", "{{app_name}}"];
-        $message1 = str_replace($noti_data, $detail, $message);
+        // Assuming the email template in the database has been updated, the rest of the process should be compatible
+        // Preparing the replacement data for the email template
+        $details['quantity'] = $request['quantity'];  // Quantity of tickets
+        $details['event_name'] = Event::find($order->event_id)->name;  // Name of the event
+        $details['date'] = Event::find($order->event_id)->start_time->format('d F Y h:i a');  // Event start time
+
+        // for user notification (if needed, depending on the system setup)
         $notification = array();
-        $notification['organizer_id'] = null;
         $notification['user_id'] = $user->id;
         $notification['order_id'] = $order->id;
-        $notification['title'] = 'Ticket Booked';
+        $notification['title'] = 'You’ve got tickets!';
+        $message1 = "Your {$details['quantity']} ticket(s) for the following event: {$details['event_name']} on {$details['date']} is successfully confirmed!\n\nEnjoy this event!\n\nTicket Pool";
         $notification['message'] = $message1;
         Notification::create($notification);
         if ($setting->push_notification == 1) {
@@ -1036,23 +1128,21 @@ class FrontendController extends Controller
                 (new AppHelper)->sendOneSignal('user', $user->device_token, $message1);
             }
         }
+
         // for user mail
         $ticket_book = NotificationTemplate::where('title', 'Book Ticket')->first();
-        $details['user_name'] = $user->name . ' ' . $user->last_name;
-        $details['quantity'] = $request->quantity;
-        $details['event_name'] = Event::find($order->event_id)->name;
-        $details['date'] = Event::find($order->event_id)->start_time->format('d F Y h:i a');
-        $details['app_name'] = $setting->app_name;
         if ($setting->mail_notification == 1) {
-
             try {
-                $qrcode = $order->order_id;
+                $qrcode = $order->order_id;  // Generate QR code if necessary
+                // Send email with the new template content
                 Mail::to($user->email)->send(new TicketBook($ticket_book->mail_content, $details, $ticket_book->subject, $qrcode));
             } catch (\Throwable $th) {
                 Log::info($th->getMessage());
             }
+            // Send mail if this is part of the process
             $this->sendMail($order->id);
         }
+        
 
         // for Organizer notification
         $org =  User::find($order->organization_id);
@@ -1069,7 +1159,7 @@ class FrontendController extends Controller
         $or_notification['organizer_id'] =  $org->id;
         $or_notification['user_id'] = null;
         $or_notification['order_id'] = $order->id;
-        $or_notification['title'] = 'New Ticket Booked';
+        $or_notification['title'] = 'Order Notification';
         $or_notification['message'] = $or_message1;
         Notification::create($or_notification);
         if ($setting->push_notification == 1) {
@@ -1688,7 +1778,7 @@ class FrontendController extends Controller
             $temp_tax[] = Tax::find($value->tax_id);
             $taxes = $temp_tax;
         }
-        $orderchild = OrderChild::where('order_id', $order->id)->get();
+        $orderchild = OrderChild::with(['ticket'])->where('order_id', $order->id)->get();
         $review = Review::where('order_id', $order->id)->first();
         return view('frontend.userOrderTicket', compact('order', 'taxes', 'review', 'orderchild'));
     }
@@ -1946,10 +2036,15 @@ class FrontendController extends Controller
         return response()->json(['id' => $session->id, 'status' => 200]);
     }
     public function stripeSuccess()
-    {
+    {       
         $request = Session::get('request');
-
         $ticket = Ticket::findOrFail($request['ticket_id']);
+        $ticketIds = null;
+        if(!empty($request['selectedSeatsIo'])){
+            $ticketIds = $request['ticket_id'];
+            $request['ticket_id'] = explode(',',$request['ticket_id'])[0];
+            $ticket = Ticket::findOrFail($request['ticket_id']);
+        }
 
         $event = Event::find($ticket->event_id);
 
@@ -1961,6 +2056,7 @@ class FrontendController extends Controller
         $data['organization_id'] = $org->id;
         $data['order_status'] = 'Pending';
         $data['ticket_id'] = $request['ticket_id'];
+        $data['ticket_id_mutiple'] = $ticketIds;
         $data['quantity'] = $request['quantity'];
         $data['payment_type'] = 'Stripe';
         $data['payment'] = $request['payment'];
@@ -2002,15 +2098,36 @@ class FrontendController extends Controller
                     $seat->update(['type' => 'occupied']);
                 }
             }
+        } 
+        if(!empty($request['selectedSeatsIo']) && count(json_decode($request['selectedSeatsIo'],true)) > 0){
+            $selectSeatsCode = json_decode($request['seatsIoIds'],true);
+            $ticketIdArray = explode(',',$ticketIds);
+            $allTickets = Ticket::whereIn('id',$ticketIdArray)->get();
+            $selectedSeatsIocounts = json_decode($request['selectedSeatsIo'],true);
+            $key = 0;
+            foreach($allTickets as $ticket){ 
+                $totalTickets = $selectedSeatsIocounts[$ticket['ticket_key']]['count'];
+                for ($i = 1; $i <= $totalTickets; $i++) {
+                    $child['ticket_number'] = uniqid();
+                    $child['ticket_number_seatsio'] = $selectedSeatsIocounts[$ticket['ticket_key']]['seats'][$key];
+                    $child['ticket_id'] = $ticket['id'];
+                    $child['order_id'] = $order->id;
+                    $child['customer_id'] = Auth::guard('appuser')->user()->id;
+                    OrderChild::create($child);
+                    $key++;
+                }
+                $key = 0;
+            }
+        }else{
+            for ($i = 1; $i <= $request['quantity']; $i++) {
+                $child['ticket_number'] = uniqid();
+                $child['ticket_id'] = $request['ticket_id'];
+                $child['order_id'] = $order->id;
+                $child['customer_id'] = Auth::guard('appuser')->user()->id;
+                OrderChild::create($child);
+            }
         }
-
-        for ($i = 1; $i <= $request['quantity']; $i++) {
-            $child['ticket_number'] = uniqid();
-            $child['ticket_id'] = $request['ticket_id'];
-            $child['order_id'] = $order->id;
-            $child['customer_id'] = Auth::guard('appuser')->user()->id;
-            OrderChild::create($child);
-        }
+        
         if (isset($request['tax_data'])) {
             foreach (json_decode($data['tax_data']) as $value) {
                 $tax['order_id'] = $order->id;
@@ -2101,6 +2218,12 @@ class FrontendController extends Controller
                 Log::info($th->getMessage());
             }
         }
+        
+        if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
+            $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
+            $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
+        }        
+
         Session::forget('request');
         return redirect()->route('myTickets');
     }

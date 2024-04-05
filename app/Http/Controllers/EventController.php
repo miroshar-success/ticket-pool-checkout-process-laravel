@@ -129,10 +129,16 @@ class EventController extends Controller
             'status' => 'bail|required',
             'url'=>'bail|required_if:type,online',
             'description' => 'bail|required',
-            'scanner_id' => 'bail|required_if:type,offline',
+            'scanner_id' => 'bail|required_if:type,offline|array',
             'people' => 'bail|required',
         ]);
         $data = $request->all();
+        $data = $request->except('scanner_id');
+
+        if ($request->has('scanner_id')) {
+            $scannerIds = $request->input('scanner_id');
+            $data['scanner_id'] = implode(',', $scannerIds);
+        }
         $data['security'] = 1;
         if ($request->hasFile('image')) {
 
@@ -141,6 +147,7 @@ class EventController extends Controller
         if (!Auth::user()->hasRole('admin')) {
             $data['user_id'] = Auth::user()->id;
         }
+//        dd($data);
         $event = Event::create($data);
         return redirect()->route('events.index')->withStatus(__('Event has added successfully.'));
     }
@@ -185,7 +192,7 @@ class EventController extends Controller
             'status' => 'bail|required',
             'url'=>'bail|required_if:type,online',
             'description' => 'bail|required',
-            'scanner_id' => 'bail|required_if:type,offline',
+            'scanner_id' => 'bail|required_if:type,offline|array',
             'people' => 'bail|required',
         ]);
         $data = $request->all();
@@ -193,6 +200,10 @@ class EventController extends Controller
         if ($request->hasFile('image')) {
             (new AppHelper)->deleteFile($event->image);
             $data['image'] = (new AppHelper)->saveImage($request);
+        }
+        if ($request->has('scanner_id')) {
+            $scannerIds = $request->input('scanner_id');
+            $data['scanner_id'] = implode(',', $scannerIds);
         }
         $event = Event::find($event->id)->update($data);
         return redirect()->route('events.index')->withStatus(__('Event has updated successfully.'));

@@ -27,8 +27,8 @@
                 </div>
             @endif
             <div class="flex sm:space-x-6 msm:space-x-0 xxsm:space-x-0 xxmd:flex-row xmd:flex-col xxsm:flex-col">
-                <div class="xxmd:w-2/3 xmd:w-full xxsm:w-full">
-                    <div id="map" style="width:100%;height:500px;">
+                <div class="xxmd:w-2/3 xmd:w-full xxsm:w-full" style="background-image: url('images/contact-us.jpg');background-size: 100% 100%;">
+                    <div id="" style="width:100%;height:500px;">
                     </div>
                 </div>
                 <div class="xxmd:w-1/3 xmd:w-full xxsm:w-full">
@@ -82,7 +82,8 @@
                         
                         <div class="flex pt-8 pb-5 flex-wrap 1xl:flex-nowrap">
                             <div class="mr-5 bg-white rounded-full h-10 overflow-hidden flex justify-center items-center">
-                                <i class="fa-regular fa-hashtag w-10 text-center align-middle text-primary"></i>
+                                <i class="fa-solid fa-at w-10 text-center align-middle text-primary"></i>
+{{--                                <i class="fa-solid fa-at"></i>--}}
                             </div>
                             <div>
                                 <p
@@ -101,9 +102,9 @@
                                     <a href="{{ $social->Instagram }}" target="blank" class="link-one">
                                         <i class="fa-brands fa-instagram fa-2x  mr-5 z-20 text-white"></i>
                                     </a>
-                                    <a href="{{ $social->Pinterest }}" target="blank" class="link-one">
-                                        <i class="fa fa-pinterest-p text-white fa-2x " aria-hidden="true"></i>
-                                    </a>
+{{--                                    <a href="{{ $social->Pinterest }}" target="blank" class="link-one">--}}
+{{--                                        <i class="fa fa-pinterest-p text-white fa-2x " aria-hidden="true"></i>--}}
+{{--                                    </a>--}}
                                     <style>
                                         .fa-2x {
                                             font-size: 24px;

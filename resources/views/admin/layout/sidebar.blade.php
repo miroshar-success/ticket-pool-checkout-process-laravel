@@ -74,11 +74,20 @@
                 </li>
             @endcan
 
-            <li class="{{ request()->is('get-notification*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ url('get-notification') }}">
-                    <i class="fas fa-bell"></i> <span>{{ __('Send Notification') }}</span>
-                </a>
-            </li>
+{{--            <li class="{{ request()->is('get-notification*') ? 'active' : '' }}">--}}
+{{--                <a class="nav-link" href="{{ url('get-notification') }}">--}}
+{{--                    <i class="fas fa-bell"></i> <span>{{ __('Send Notification') }}</span>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+
+            @can('email_access')
+                <li class="{{ request()->is('email*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('email') }}">
+                        <i class="fas fa-envelope"></i> <span>{{ __('Email Notofications') }}</span>
+                    </a>
+                </li>
+            @endcan
+
             @can('event_access')
                 <li class="{{ request()->is('events*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('events') }}">
