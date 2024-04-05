@@ -1142,7 +1142,7 @@ class FrontendController extends Controller
             // Send mail if this is part of the process
             $this->sendMail($order->id);
         }
-        
+
 
         // for Organizer notification
         $org =  User::find($order->organization_id);
@@ -1167,6 +1167,7 @@ class FrontendController extends Controller
                 (new AppHelper)->sendOneSignal('organizer', $org->device_token, $or_message1);
             }
         }
+        
         // for Organizer mail
         $new_ticket = NotificationTemplate::where('title', 'Organizer Book Ticket')->first();
         $details1['organizer_name'] = $org->first_name . ' ' . $org->last_name;
