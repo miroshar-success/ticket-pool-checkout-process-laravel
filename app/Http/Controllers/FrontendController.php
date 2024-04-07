@@ -2162,7 +2162,7 @@ class FrontendController extends Controller
             }
         }
         // for user mail
-        $ticket_book = NotificationTemplate::where('title', 'Book Ticket')->first();
+        $ticket_book = NotificationTemplate::where('title', 'Order Notification')->first();
         $details['user_name'] = $user->name . ' ' . $user->last_name;
         $details['quantity'] = $request['quantity'];
         $details['event_name'] = Event::find($order->event_id)->name;
