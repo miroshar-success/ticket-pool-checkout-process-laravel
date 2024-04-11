@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <title>{{__('Event Right Revamped')}}</title>
     <meta charset="utf-8">
@@ -8,9 +9,10 @@
     <input type="hidden" name="base_url" value="{{ url('/') }}">
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
     <link href="{{asset('css/select2.css')}}" rel="stylesheet">
-    <link href="{{asset('css/custom.css')}}?<?php echo time();?>" rel="stylesheet">
-
+    <link href="{{asset('css/custom.css')}}?<?php echo time(); ?>" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
+
 <body>
     <div class="site-wrapper">
         @include('layout.navbar')
@@ -24,4 +26,7 @@
 <script src="https://unpkg.com/flowbite@1.5.5/dist/flowbite.js"></script>
 <script src="{{asset('js/app.js')}}"></script>
 <script src="{{asset('js/custom.js')}}"></script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
 </html>

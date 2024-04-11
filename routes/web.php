@@ -23,6 +23,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\CheckoutController;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -192,3 +193,8 @@ Route::get('transction_verify/{id}', [UserController::class, 'transction_verify'
 Route::post('/email/{id}/resend', [EmailTemplateController::class, 'resendEmail'])->name('email.resend');
 
 Route::get('testing-email',[EmailTemplateController::class,'testEmail']);
+
+// Checkout process
+Route::get('/checkout-process', [CheckoutController::class, 'index'])->name('checkout');
+Route::get('/detail-view', [CheckoutController::class, 'detail_view'])->name('detail_view');
+Route::get('/additional-detail-view', [CheckoutController::class, 'additional_detail_view'])->name('additional_detail_view');
