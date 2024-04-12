@@ -8,18 +8,28 @@
         </div>
         <p class="w-full text-sm font-normal cursor-pointer text-gray-600">Please fill in these additional information</p>
         <div class="mt-5 w-full">
-            <form class="space-y-6" action="#" method="POST">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li style="color:red">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            <form class="space-y-6" action="{{route('register_post')}}" method="POST">
+                @csrf
                 <div class="mt-2 w-full">
-                    <label for="city" class="block text-sm font-medium leading-6 text-gray-900">Country<span style="color:red">*</span></label>
+                    <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Country<span style="color:red">*</span></label>
                     <div class="relative">
-                        <select id="country" name="country" class="block w-full py-2 pl-3 pr-10 text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500">
+                        <select id="country" name="country" class="block w-full py-2 pl-3 pr-10 text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500" required>
                             <option value="" selected disabled>Select a country</option>
                         </select>
                     </div>
                 </div>
                 <div class="mt-2 w-full">
                     <label for="city" class="block text-sm font-medium leading-6 text-gray-900">City<span style="color:red">*</span></label>
-                    <select id="city" name="city" class="border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1.5 px-1.5 focus:outline-none" style="height:40px">
+                    <select id="city" name="city" class="border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1.5 px-1.5 focus:outline-none" style="height:40px" required>
                         <option value="" selected disabled>Select a city</option>
                     </select>
                 </div>

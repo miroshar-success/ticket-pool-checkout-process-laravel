@@ -33,10 +33,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="{{ url('frontend/css/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ url('frontend/css/event.css') }}?<?php echo time(); ?>" rel="stylesheet">
+
+    <script src="{{ url('frontend/js/jquery.min.js') }}"></script>
+    <script src="{{ url('js/custom.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
     <!-- Template Main CSS File -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     @if (session('direction') == 'rtl')
     <link rel="stylesheet" href="{{ url('frontend/css/rtl.css') }}">
     @endif
@@ -134,7 +138,6 @@
         <script src="{{ url('frontend/js/qrcode.min.js') }}"></script>
         <script src="{{ url('frontend/js/main.js') }}"></script>
         <script src="{{ url('frontend/js/custom.js') }}"></script>
-        <script src="{{ url('js/custom.js') }}"></script>
         <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/datepicker.min.js"></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>

@@ -61,9 +61,9 @@
             <!-- <div class="col-lg-8 col-12 order-lg-2 order-1 min-vh-100 background-walk-y position-relative overlay-gradient-bottom"
                 data-background="{{ url('/images/auth_image.png') }}"> -->
             <div class="mobile-hide col-lg-8 col-12 order-lg-2 order-1 min-vh-100 position-relative pl-0">
-                <video preload="auto" autoplay muted loop id="myVideo" class="position-fixed h-100">
+                <!-- <video preload="auto" autoplay muted loop id="myVideo" class="position-fixed h-100">
                     <source src="/applications/ticket-pool/public/images/auth_video.mp4" type="video/mp4">
-                </video>
+                </video> -->
                 <div class="absolute-bottom-left index-2">
                     <div class="text-light p-5 pb-2">
                         <div class="mb-5 pb-3">

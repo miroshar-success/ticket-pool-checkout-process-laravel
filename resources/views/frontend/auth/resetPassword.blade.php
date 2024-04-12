@@ -62,7 +62,7 @@
         input[type="radio"]:checked {
             background-color: var(--primary_color) !important;
             color: var(--primary_color) !important;
-        }        
+        }
         .text-underline {
             text-decoration: underline;
         }
@@ -83,7 +83,7 @@
         input[type="radio"] {
             margin: 0 5px 0 10px;
         }
-        
+
         @media (max-width: 576px) {
             .mobile-hide {
                 display: none !important;
@@ -159,8 +159,8 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>                        
-                        
+                        </div>
+
                         <div class="form-group text-right">
                             <button type="submit" class="btn btn-primary btn-lg btn-icon icon-right">
                                 {{ __('Reset Password') }}
@@ -175,9 +175,9 @@
             </div>
 
         <div class="col-lg-8 col-12 order-lg-2 order-1 min-vh-100 position-relative pl-0 mobile-hide">
-            <video preload="auto" autoplay muted loop id="myVideo" class="position-fixed h-100">
+            <!-- <video preload="auto" autoplay muted loop id="myVideo" class="position-fixed h-100">
                 <source src="/applications/ticket-pool/public/images/auth_video.mp4" type="video/mp4">
-            </video>
+            </video> -->
             <div class="absolute-bottom-left index-2">
                 <div class="text-light p-5 pb-2">
                     <div class="mb-5 pb-3">

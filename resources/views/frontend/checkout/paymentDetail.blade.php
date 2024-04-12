@@ -10,12 +10,12 @@
         <div class="mt-5 w-full">
             <form class="space-y-6" action="#" method="POST">
                 <div class="flex items-center mb-4" style="margin-top: 20px">
-                    <input id="checkbox-default" type="checkbox" value="" class="w-5 h-5 appearance-none border cursor-pointer border-gray-300  rounded-md mr-2 hover:border-indigo-500 hover:bg-indigo-100 checked:bg-no-repeat checked:bg-center checked:border-indigo-500 checked:bg-indigo-100">
-                    <label for="checkbox-default" class="text-sm font-norma cursor-pointer text-gray-600"> Card</label>
+                    <input id="card" name="payment" type="radio" value="card" class="w-5 h-5 appearance-none border cursor-pointer border-gray-300  rounded-md mr-2 hover:border-indigo-500 hover:bg-indigo-100 checked:bg-no-repeat checked:bg-center checked:border-indigo-500 checked:bg-indigo-100">
+                    <label for="card" class="text-sm font-norma cursor-pointer text-gray-600"> Card</label>
                 </div>
                 <div class="flex items-center">
-                    <input id="checked-checkbox" type="checkbox" value="" class="w-5 h-5 appearance-none cursor-pointer border border-gray-300  rounded-md mr-2 hover:border-indigo-500 hover:bg-indigo-100 checked:bg-no-repeat checked:bg-center checked:border-indigo-500 checked:bg-indigo-100">
-                    <label for="checked-checkbox" class="text-sm font-normal cursor-pointer text-gray-600"> Klarna</label>
+                    <input id="klarna" name="payment" type="radio" value="klarna" class="w-5 h-5 appearance-none cursor-pointer border border-gray-300  rounded-md mr-2 hover:border-indigo-500 hover:bg-indigo-100 checked:bg-no-repeat checked:bg-center checked:border-indigo-500 checked:bg-indigo-100">
+                    <label for="klarna" class="text-sm font-normal cursor-pointer text-gray-600"> Klarna</label>
                 </div>
                 <div>
                     <button type="submit" class="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Pay $11.30p</button>

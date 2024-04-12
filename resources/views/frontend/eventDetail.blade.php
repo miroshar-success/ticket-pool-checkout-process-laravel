@@ -402,7 +402,7 @@
                         @endif
                     @endif
                 </div>
-                <form id="seatSelectionForm" action="{{ route('checkout') }}" method="POST">
+                <form id="seatSelectionForm" action="{{ route('checkout') }}" method="GET">
                     @csrf
                     <input type="hidden" id="seatsio_eventId" name="seatsio_eventId" value="{{$data->seatsio_eventId}}">
                     <input type="hidden" id="selectedSeatsInput" name="selectedSeats">
