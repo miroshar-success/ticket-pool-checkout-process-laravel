@@ -57,7 +57,7 @@ class ApiController extends Controller
         if (Auth::guard('appuser')->attempt($credentials)) {
             // Successfully authenticated
             $user = Auth::guard('appuser')->user();
-            
+
             // Assuming you want to do something with device token right after login
             if ($request->has('device_token')) {
                 $user->device_token = $request->device_token;
@@ -112,9 +112,9 @@ class ApiController extends Controller
                     'password'   => $setting->mail_password
                 );
                 Config::set('mail', $config);
-
+                $checkout_process = $request->has('checkout_process') ? 1 : 0;
                 $details = [
-                    'url' => url('user/VerificationConfirm/' .  $user->id)
+                    'url' => url('user/VerificationConfirm/' .  $user->id . '/' . $checkout_process)
                 ];
                 Mail::to($user->email)->send(new \App\Mail\VerifyMail($details));
                 return response()->json(['msg' => 'Verification link has been sent to your email. Please visit that link to complete the verification.', 'data' => $user, 'success' => true], 200);

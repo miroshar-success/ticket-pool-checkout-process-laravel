@@ -52,7 +52,7 @@
                                         @endfor
                                     </div>
                                 @endif
-                            </div>                           
+                            </div>
                         </div>
                     </div>
                     <section class="simplified-organizer-info" data-testid="simplified-organizer-info" aria-label="Organizer profile">
@@ -118,7 +118,7 @@
                             <p class="font-normal text-lg leading-7 text-gray pt-5">
                                 {!! $data->description !!}
                             </p>
-                        </div>  
+                        </div>
                     </div>
                     <div class="mt-10 bg-white">
                         <p class="section-title font-semibold text-2xl leading-8 text-black">{{ __('Tags') }}</p>
@@ -129,7 +129,7 @@
                                 </a>
                             @endforeach
                         </div>
-                    </div>                    
+                    </div>
                     <div class="mt-10 bg-white">
                         <p class="section-title font-semibold text-2xl leading-8 text-black">{{ __('About the organiser') }}</p>
                         <div class="mt-4 p-4 bg-white shadow-lg rounded-lg">
@@ -146,13 +146,13 @@
                                             {{  ($data->organization->first_name ?? '') . ' ' . ($data->organization->last_name ?? '') }}
                                         </p>
                                     </div>
-                                    
+
                                     <div class="followers-count">
                                         <span class="organizer-stats__highlight text-center">{{ $data->people }}</span>
                                         <span class="organizer-stats__suffix text-center">followers</span>
                                     </div>
                                 </div>
-                            </a> 
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@
                         @php $event = $data->seatsio_eventId; $pricing = array(); @endphp
                         @if (count($data->paid_ticket) != 0)
                             @foreach ($data->paid_ticket as $item)
-                                @php 
+                                @php
                                     $pricing[] = array(
                                         'category' => $item->ticket_key,
                                         'price' => $item->price
@@ -211,7 +211,7 @@
                         @endif
                         @if (count($data->free_ticket) != 0)
                             @foreach ($data->free_ticket as $item)
-                                @php 
+                                @php
                                     $pricing[] = array(
                                         'category' => $item->ticket_key,
                                         'price' => $item->price
@@ -255,7 +255,7 @@
                                     // remove the deselected seat id from the array
                                     var index = seatsIoIds.indexOf(object.label);
                                     if (index !== -1) seatsIoIds.splice(index, 1);
-                                    
+
                                     var ticketKey = object.category.key;
                                     if (selectedSeats.hasOwnProperty(ticketKey) && selectedSeats[ticketKey].count > 0) {
                                         selectedSeats[ticketKey].count--;
@@ -317,10 +317,10 @@
                                             {{ Carbon\Carbon::parse($item->start_time)->format('d M Y') }} {{__('till')}}
                                             {{ Carbon\Carbon::parse($item->end_time)->format('d M Y') }}
                                         </p>
-                                        
+
                                     </div>
 
-                                    
+
                                     @if ($item->available_qty == 0)
                                         <div class="absolute bottom-5" style="width: 89%">
                                             <div class="mt-7  w-full border border-primary rounded-lg flex justify-center">
@@ -402,8 +402,8 @@
                         @endif
                     @endif
                 </div>
-                <form id="seatSelectionForm" action="{{ route('checkout') }}" method="POST">
-                    @csrf                    
+                <form id="seatSelectionForm" action="{{ route('checkout') }}" method="GET">
+                    @csrf
                     <input type="hidden" id="seatsio_eventId" name="seatsio_eventId" value="{{$data->seatsio_eventId}}">
                     <input type="hidden" id="selectedSeatsInput" name="selectedSeats">
                     <input type="hidden" id="seatsIoIds" name="seatsIoIds">
@@ -417,7 +417,7 @@
                     <p class="font-medium text-base leading-8 text-black">({{ count($data->review) }})</p>
                 </div>
             </div>
-            <div class="bg-white shadow-lg rounded-md p-4 mt-10">                
+            <div class="bg-white shadow-lg rounded-md p-4 mt-10">
                 @if (count($data->review) != 0)
                     @foreach ($data->review as $item)
                         <div>
@@ -461,7 +461,7 @@
             </div>
             {{-- Report Event --}}
             <p class="mt-10 section-title font-semibold text-2xl leading-8 text-black">{{ __('Report Event') }}</p>
-            <div class="bg-white shadow-lg rounded-md p-4 mt-10">                
+            <div class="bg-white shadow-lg rounded-md p-4 mt-10">
                 <form class="form-a" method="post" action="{{ url('report-event') }}">
                     @csrf
                     <div class="">
@@ -470,7 +470,7 @@
                                 <label for="name"
                                     class="font-normal text-lg leading-7 text-gray-100 pb-2">{{ __('Name') }}</label>
                                 <input type="text" name="name"
-                                    class="focus:outline-none text-base leading-4 font-normal text-gray-100 block p-3 rounded-md z-20 
+                                    class="focus:outline-none text-base leading-4 font-normal text-gray-100 block p-3 rounded-md z-20
                             border border-gray-light w-full"
                                     placeholder="{{ __('Name *') }}">
                             </div>
@@ -478,7 +478,7 @@
                                 <label for="name"
                                     class="font-normal text-lg leading-7 text-gray-100 pb-2">{{ __('Email address') }}</label>
                                 <input type="text" name="email"
-                                    class="focus:outline-none text-base leading-4 font-normal text-gray-100 block p-3 rounded-md z-20 
+                                    class="focus:outline-none text-base leading-4 font-normal text-gray-100 block p-3 rounded-md z-20
                             border border-gray-light w-full"
                                     placeholder="{{ __('Email *') }}">
                             </div>
@@ -488,7 +488,7 @@
                                 <label for="report_reason"
                                     class="font-normal text-lg leading-7 text-gray-100 pb-2">{{ __('Report Reason') }}</label>
                                 <select id="report_reason" name="reason"
-                                    class="w-full focus:outline-none text-base leading-4 font-normal text-gray-100 block p-3 rounded-md z-20 
+                                    class="w-full focus:outline-none text-base leading-4 font-normal text-gray-100 block p-3 rounded-md z-20
                             border border-gray-light">
                                     <option class="font-normal text-base leading-4 text-gray-100" selected
                                         disabled>
@@ -532,7 +532,7 @@
         </div>
     </div>
     <script>
-        
+
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {
@@ -554,7 +554,7 @@
         //         stripeSession();
         //     });
         // });
-                                    
+
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ $gmapkey }}&callback=initMap"></script>
 

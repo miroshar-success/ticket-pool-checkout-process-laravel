@@ -27,7 +27,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
 
     Route::group(['prefix' => 'user'], function () {
 
-        Route::get('/VerificationConfirm/{id}', [FrontendController::class, 'LoginByMail']);
+        Route::get('/VerificationConfirm/{id}/{checkout}', [FrontendController::class, 'LoginByMail']);
         Route::get('/register', [FrontendController::class, 'register']);
         Route::post('/register', [FrontendController::class, 'userRegister']);
         Route::get('/otp-verify/{userid}', [FrontendController::class, 'otpView']);
@@ -53,7 +53,7 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
         Route::get('/all-events', [FrontendController::class, 'allEvents']);
         Route::post('/all-events', [FrontendController::class, 'allEvents']);
         Route::get('/events-category/{id}/{name}', [FrontendController::class, 'categoryEvents']);
-        Route::get('/event-type/{type}', [FrontendController::class, 'eventType']);        
+        Route::get('/event-type/{type}', [FrontendController::class, 'eventType']);
         Route::get('/event-old/{id}/{name}', [FrontendController::class, 'eventDetailOld']);
         Route::get('/event/{id}/{name}', [FrontendController::class, 'eventDetail']);
         Route::get('/events/{id}', [FrontendController::class, 'eventDetail']);
@@ -101,4 +101,3 @@ Route::group(['middleware' => ['mode', 'XSS']], function () {
         });
     });
 });
-

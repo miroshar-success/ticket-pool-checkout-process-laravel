@@ -3,19 +3,19 @@
 
 <head>
     @php
-        $favicon = \App\Models\Setting::find(1)->favicon;
+    $favicon = \App\Models\Setting::find(1)->favicon;
     @endphp
     <meta charset="utf-8">
-    <link href="{{ $favicon ? url('images/upload/' . $favicon) : asset('/images/logo.png') }}" rel="icon"
-        type="image/png">
+    <link href="{{ $favicon ? url('images/upload/' . $favicon) : asset('/images/logo.png') }}" rel="icon" type="image/png">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>{{ \App\Models\Setting::find(1)->app_name }} | @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link href="{{ asset('css/flowbite.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <input type="hidden" name="base_url" id="base_url" value="{{ url('/') }}">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}?<?php echo time();?>" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}?<?php echo time(); ?>" rel="stylesheet">
     {!! JsonLdMulti::generate() !!}
     {!! SEOMeta::generate() !!}
     {!! OpenGraph::generate() !!}
@@ -32,15 +32,17 @@
     <link href="{{ url('frontend/css/font-awesome.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="{{ url('frontend/css/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ url('frontend/css/event.css') }}?<?php echo time();?>" rel="stylesheet">
+    <link href="{{ url('frontend/css/event.css') }}?<?php echo time(); ?>" rel="stylesheet">
+
+    <script src="{{ url('frontend/js/jquery.min.js') }}"></script>
+    <script src="{{ url('js/custom.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
     <!-- Template Main CSS File -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     @if (session('direction') == 'rtl')
-        <link rel="stylesheet" href="{{ url('frontend/css/rtl.css') }}">
+    <link rel="stylesheet" href="{{ url('frontend/css/rtl.css') }}">
     @endif
 </head>
 
@@ -99,10 +101,8 @@
         </style>
 
         <input type="hidden" name="currency" id="currency" value="{{ $currency }}">
-        <input type="hidden" name="default_lat" id="default_lat"
-            value="{{ \App\Models\Setting::find(1)->default_lat }}">
-        <input type="hidden" name="default_long" id="default_long"
-            value="{{ \App\Models\Setting::find(1)->default_long }}">
+        <input type="hidden" name="default_lat" id="default_lat" value="{{ \App\Models\Setting::find(1)->default_lat }}">
+        <input type="hidden" name="default_long" id="default_long" value="{{ \App\Models\Setting::find(1)->default_long }}">
         <div class="site-wrapper">
             @include('frontend.layout.header')
             <div class="min-h-screen flex flex-col">
@@ -131,15 +131,13 @@
         $map_key = \App\Models\Setting::find(1)->map_key;
         ?>
         @if ($client_id != null)
-            <script src="https://www.paypal.com/sdk/js?client-id={{ $client_id }}&currency={{ $cur }}"
-                data-namespace="paypal_sdk"></script>
+        <script src="https://www.paypal.com/sdk/js?client-id={{ $client_id }}&currency={{ $cur }}" data-namespace="paypal_sdk"></script>
         @endif
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
         <script src="https://unpkg.com/flowbite@1.5.5/dist/flowbite.js"></script>
         <script src="{{ url('frontend/js/qrcode.min.js') }}"></script>
         <script src="{{ url('frontend/js/main.js') }}"></script>
         <script src="{{ url('frontend/js/custom.js') }}"></script>
-        <script src="{{ url('js/custom.js') }}"></script>
         <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/datepicker.min.js"></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>

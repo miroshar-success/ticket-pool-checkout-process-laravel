@@ -364,7 +364,7 @@ class FrontendController extends Controller
         }
         return redirect('user/login')->with(['success' => "Congratulations! Your account registration was successful. You can now log in to your account and start using our services. Thank you for choosing our platform"]);
     }
-    public function LoginByMail($id)
+    public function LoginByMail($id, $checkout)
     {
         $user = AppUser::find($id);
         if (Auth::guard('appuser')->loginUsingId($id)) {
@@ -374,6 +374,9 @@ class FrontendController extends Controller
             $verify->is_verify = 1;
             $verify->update();
             $this->setLanguage($user);
+            if($checkout == 1) {
+               return redirect()->route('payment_detail_view');
+            }
             return redirect('/');
         }
     }
@@ -893,20 +896,20 @@ class FrontendController extends Controller
                             // Apply the where condition on the ticket relationship
                             $query->whereIn('ticket_key',$seatKeys);
                         }])->where('seatsio_eventId',$request->seatsio_eventId)->first();
-        
+
         $data = array();
         $data['event'] = $eventDetails;
         $totalTickets = 0;
         if(!empty($eventDetails['ticket'])){
             $setting = Setting::first();
             foreach($eventDetails['ticket'] as $key => $ticket){
-                try { 
+                try {
                 $totalTickets += $selectedSeats[$ticket['ticket_key']]['count'];
-                         
+
                 $data['ticket'][$key] = $ticket;
                 $data['ticket'][$key]['selectedseatsCount'] = $selectedSeats[$ticket['ticket_key']]['count'];
-                $data['ticket'][$key]['selectedseatsPrice'] = $selectedSeats[$ticket['ticket_key']]['count'] * $ticket['price']; 
-                
+                $data['ticket'][$key]['selectedseatsPrice'] = $selectedSeats[$ticket['ticket_key']]['count'] * $ticket['price'];
+
                 SEOMeta::setTitle($ticket['name'])
                 ->setDescription($ticket['description'])
                 ->addKeyword([
@@ -915,7 +918,7 @@ class FrontendController extends Controller
                     $data['event']['name'],
                     $data['event']['tags']
                 ]);
-                
+
                 OpenGraph::setTitle($ticket['name'])
                     ->setDescription($ticket['description'])
                     ->setUrl(url()->current());
@@ -934,7 +937,7 @@ class FrontendController extends Controller
                     $data['event']['tags']
                 ]);
                 SEOTools::jsonLd()->addImage($setting->imagePath . $setting->logo);
-                
+
                 $arr = [];
                 $used = Order::where('ticket_id', $ticket['id'])->sum('quantity');
                 $data['ticket'][$key]['available_qty'] = $ticket['quantity'] - $used;
@@ -951,8 +954,8 @@ class FrontendController extends Controller
                 }
                 $data['ticket'][$key]['singletax_total'] = array_sum($arr);
                 $data['ticket'][$key]['singletax_total'] = round($data['ticket'][$key]['singletax_total'], 2);
-                
-                
+
+
                 } catch (\Throwable $th) {
                     \Log::error($th);
                 }
@@ -2040,7 +2043,7 @@ class FrontendController extends Controller
         return response()->json(['id' => $session->id, 'status' => 200]);
     }
     public function stripeSuccess()
-    {       
+    {
         $request = Session::get('request');
         $ticket = Ticket::findOrFail($request['ticket_id']);
         $ticketIds = null;
@@ -2102,14 +2105,14 @@ class FrontendController extends Controller
                     $seat->update(['type' => 'occupied']);
                 }
             }
-        } 
+        }
         if(!empty($request['selectedSeatsIo']) && count(json_decode($request['selectedSeatsIo'],true)) > 0){
             $selectSeatsCode = json_decode($request['seatsIoIds'],true);
             $ticketIdArray = explode(',',$ticketIds);
             $allTickets = Ticket::whereIn('id',$ticketIdArray)->get();
             $selectedSeatsIocounts = json_decode($request['selectedSeatsIo'],true);
             $key = 0;
-            foreach($allTickets as $ticket){ 
+            foreach($allTickets as $ticket){
                 $totalTickets = $selectedSeatsIocounts[$ticket['ticket_key']]['count'];
                 for ($i = 1; $i <= $totalTickets; $i++) {
                     $child['ticket_number'] = uniqid();
@@ -2131,7 +2134,7 @@ class FrontendController extends Controller
                 OrderChild::create($child);
             }
         }
-        
+
         if (isset($request['tax_data'])) {
             foreach (json_decode($data['tax_data']) as $value) {
                 $tax['order_id'] = $order->id;
@@ -2166,7 +2169,7 @@ class FrontendController extends Controller
             }
         }
         // for user mail
-        $ticket_book = NotificationTemplate::where('title', 'Book Ticket')->first();
+        $ticket_book = NotificationTemplate::where('title', 'Order Notification')->first();
         $details['user_name'] = $user->name . ' ' . $user->last_name;
         $details['quantity'] = $request['quantity'];
         $details['event_name'] = Event::find($order->event_id)->name;
@@ -2222,11 +2225,11 @@ class FrontendController extends Controller
                 Log::info($th->getMessage());
             }
         }
-        
+
         if(!empty($request['seatsIoIds']) && count(json_decode($request['seatsIoIds'],true)) > 0){
             $seatsioClient = new SeatsioClient(Region::EU(), '64c09328-4e37-4e06-82f4-e173a5d0e1f2');
             $seatsioClient->events->book($event->seatsio_eventId, json_decode($request['seatsIoIds'],true));
-        }        
+        }
 
         Session::forget('request');
         return redirect()->route('myTickets');

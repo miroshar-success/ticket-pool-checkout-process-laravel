@@ -30,7 +30,7 @@
 
     <script src="{{ asset('js/custom.js') }}"></script>
     <script>
-        $(document).ready(function() {                
+        $(document).ready(function() {
             $('#DateOfBirth').flatpickr({
                 maxDate: "today",
                 enableTime: false,
@@ -85,7 +85,7 @@
         input[type="radio"]:checked {
             background-color: var(--primary_color) !important;
             color: var(--primary_color) !important;
-        }   
+        }
         .text-underline {
             text-decoration: underline;
         }
@@ -112,7 +112,7 @@
         .hidden {
             display: none !important;
         }
-        
+
         @media (max-width: 576px) {
             .mobile-hide {
                 display: none !important;
@@ -185,7 +185,7 @@
                         alt="logo" width="300" class="mb-4 mt-2 object-contain">
                     <h4 class="text-white font-weight-normal mb-4">{{ __('Create an account') }}</h4>
                     <form class="need-validation" action="{{ url('user/register') }}" method="post">
-                        @csrf                        
+                        @csrf
                         <div class="form-group d-flex align-items-center justify-content-center user-organizer-options">
                             <div class="radio-wrapper d-flex flex-1 border justify-content-center border border-gray-ligh rounded-lg">
                                 <input id="default-radio-1" type="radio" value="user" checked name="user_type"
@@ -255,8 +255,8 @@
                                     </select>
                                 </div>
                                 <div style="width: 5px"></div>
-                                <div style="width: 65%">                               
-                                    <input type="number" name="phone" id="" class="form-control" placeholder="{{ __('Number') }}">                                        
+                                <div style="width: 65%">
+                                    <input type="number" name="phone" id="" class="form-control" placeholder="{{ __('Number') }}">
                                 </div>
                             </div>
                         </div>
@@ -272,14 +272,14 @@
                             <label for="password" class="text-white">{{ __('Password') }}</label>
                             <input required type="password" name="password" id="password" class="form-control" placeholder="{{ __('Password') }}">
                         </div>
-                        
+
                         <div class="form-group">
                             <div class="text-right">
                                 <button class="btn btn-primary btn-lg btn-icon icon-right">
                                     {{ __('Create') }}
-                                </button>                               
+                                </button>
                             </div>
-                        </div> 
+                        </div>
                     </form>
                     <div class="mt-5 form-group d-flex align-items-end justify-content-between">
                         <h5 class="font-medium text-left font-poppins text-white pb-0 mb-0">
@@ -290,9 +290,9 @@
                 </div>
             </div>
             <div class="col-lg-8 col-12 order-lg-2 order-1 min-vh-100 position-relative pl-0 mobile-hide">
-                <video preload="auto" autoplay muted loop id="myVideo" class="position-fixed h-100">
+                <!-- <video preload="auto" autoplay muted loop id="myVideo" class="position-fixed h-100">
                     <source src="/applications/ticket-pool/public/images/auth_video.mp4" type="video/mp4">
-                </video>
+                </video> -->
                 <div class="absolute-bottom-left index-2">
                     <div class="text-light p-5 pb-2">
                         <div class="mb-5 pb-3">
